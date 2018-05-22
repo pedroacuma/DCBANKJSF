@@ -1,0 +1,66 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19-abr-2018, 12:15:28
+    Author     : oem
+*/
+
+				body {
+					font-family: Arial,sans-serif;
+					background-color: #2ECC71;
+				}
+                                div.centrar{
+                                    margin-left: 20em;
+                                    margin-right: auto;
+                                    margin-bottom: 10em;
+                                }
+                                
+                                div.opciones{
+                                    position: absolute;
+                                    right: 1em;
+                                    border-bottom: thick;
+                                }
+                                
+				table.tablaUsuario {
+                                    list-style-type: none;
+                                    padding: 0;
+                                    margin: 0;
+                                    top: 2em;
+                                    left: 1em;
+                                    width: 9em;
+                                    float: left;
+                                    
+                                }
+                                table.tablaCuentas {
+                                    list-style-type: none;
+                                    padding: 0;
+                                    margin: 0;
+                                    top: 2em;
+                                    left: 1em;
+                                    width: 9em;
+                                    float:left;
+                                }
+                                table.tablaMovimientos {
+                                    list-style-type: none;
+                                    padding: 0;
+                                    margin: 0;
+                                    top: 2em;
+                                    left: 1em;
+                                    width: 9em;
+                                    float:left;
+                                }
+                                
+				th {
+                                    background: darkcyan;
+                                    margin: 0.5em 0;
+                                    padding: 0.3em;
+                                    
+                                }
+                                td {
+                                    background: aliceblue;
+                                    margin: 0.5em 0;
+                                    padding: 0.3em;
+                                }
