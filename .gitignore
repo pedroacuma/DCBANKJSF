@@ -5,3 +5,5 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+/DCBANK-ejb/nbproject/private/
+/DCBANK-war/nbproject/private/

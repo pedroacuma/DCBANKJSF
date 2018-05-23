@@ -34,15 +34,6 @@ and open the template in the editor.
                                     float: left;
                                     
                                 }
-                                table.tablaCuentas {
-                                    list-style-type: none;
-                                    padding: 0;
-                                    margin: 0;
-                                    top: 2em;
-                                    left: 1em;
-                                    width: 9em;
-                                    float:left;
-                                }
                                 table.tablaMovimientos {
                                     list-style-type: none;
                                     padding: 0;
@@ -52,7 +43,7 @@ and open the template in the editor.
                                     width: 9em;
                                     float:left;
                                 }
-                                
+                               
 				th {
                                     background: darkcyan;
                                     margin: 0.5em 0;

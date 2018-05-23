@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Empleado Principal</title>
+    </h:head>
+    <h:body>
+         <h1>Empleado Principal</h1>
+
+        <h:form>
+            <h:inputText value="#{empleadoPrincipalBean.dniBuscado}"/>
+            <h:commandButton value="Buscar Cliente" action="#{empleadoPrincipalBean.doBuscarUsuario()}"/>
+        </h:form>
+         
+         <br></br>
+         
+         <!--Tabla con los datos del usuario-->
+         <table border = "3"> 
+                <tr>
+                    <th>Nombre y Apellidos</th>
+                </tr>
+                <tr>
+                    <td align="center">#{empleadoPrincipalBean.usuarioBuscado.nombre}</td>
+                </tr>
+                <tr>
+                    <th>DNI</th>
+                </tr>
+                <tr>
+                    <td align="center">#{empleadoPrincipalBean.usuarioBuscado.dni}</td>
+                </tr>
+                <tr>
+                    <th>Direccion</th>
+                </tr>
+                <tr>
+                    <td align="center">#{empleadoPrincipalBean.usuarioBuscado.domicilio}</td>
+                </tr>
+        </table>
+         
+         <br></br>
+         
+         <!--Tabla para las cuentas-->
+         <table border = "3"> 
+                <tr>
+                    <th>Cuenta Usuario</th>
+                </tr>
+                <tr>
+                    <td align="center">#{empleadoPrincipalBean.cuentaUsuario.iban}</td>
+                </tr>
+        </table>
+               
+         <br></br>
+               
+         <!--Buscador de Movimientos-->
+         <h:form rendered="#{empleadoPrincipalBean.usuarioBuscado ne null}">
+         Buscar Movimiento por <h:selectOneMenu value="#{empleadoPrincipalBean.criterioDeBusqueda}"> 
+                <f:selectItem itemValue="A" itemLabel="Concepto" />
+                <f:selectItem itemValue="B" itemLabel="Cuenta Destino" />
+                <f:selectItem itemValue="C" itemLabel="Beneficiario" />
+             </h:selectOneMenu>
+             <br></br>         
+             <h:inputText value="#{empleadoPrincipalBean.movimientoBuscado}"/>        
+             <h:commandButton value="Buscar Movimiento" action="#{empleadoPrincipalBean.doBuscarMovimiento()}"/>
+        </h:form>
+         
+         <br></br>
+         
+         <!--Tabla para los movimientos-->
+         <h:dataTable value="#{empleadoPrincipalBean.listaMovimientos}" var="movimiento" border="3">
+            
+            <h:column>
+                <f:facet name="header">
+                    Fecha
+                </f:facet>
+                #{movimiento.fecha}
+            </h:column>
+             
+             <h:column>
+                <f:facet name="header">
+                    Cuenta Origen
+                </f:facet>
+                #{movimiento.cuenta.iban}
+            </h:column>
+             
+             <h:column>
+                <f:facet name="header">
+                    Cuenta Destino
+                </f:facet>
+                #{movimiento.cuentaDestino.iban}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Cantidad
+                </f:facet>
+                #{movimiento.cantidad}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Beneficiario
+                </f:facet>
+                #{movimiento.beneficiario}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Concepto
+                </f:facet>
+                #{movimiento.concepto}
+            </h:column>
+             
+        </h:dataTable>
+         
+    </h:body>
+</html>
+
