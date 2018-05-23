@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 
 /**
  *
@@ -41,6 +42,9 @@ public class EmpleadoPrincipalBean implements Serializable {
     
     @EJB
     CuentaFacade cf;
+    
+    @Inject
+    private LoginBean loginBean;
     
     /*
         ===================
@@ -120,7 +124,7 @@ public class EmpleadoPrincipalBean implements Serializable {
     @PostConstruct
     public void init(){
         List<Usuario> listaUsuarios = uf.findAll();
-        loggedUser = listaUsuarios.get(0);
+        loggedUser = loginBean.loggedUser;
         if (loggedUser == null){
             doSalir();
         }else if (loggedUser.getRol() == 0){
@@ -139,7 +143,7 @@ public class EmpleadoPrincipalBean implements Serializable {
             listaMovimientos = null;
         }
         
-        return "index";
+        return "";
     }
     
     public String doBuscarMovimiento(){
@@ -185,7 +189,7 @@ public class EmpleadoPrincipalBean implements Serializable {
             
         }
  
-        return "index";
+        return "";
     }
 
     private String doSalir() {

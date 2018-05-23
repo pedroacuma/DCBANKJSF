@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title> Acceso a DCBank </title>
+        <h:outputStylesheet  library="css" name="login.css"/>
+    </h:head>
+    <h:body>
+        <div>
+            <h1 align="center"> Acceso a DCbank </h1>
+            <hr/>
+        </div>
+        <div  class="loginform cf">
+            <h:form>
+            <ul>
+                <li>
+                    <h:outputLabel for="userDni" value="DNI"/>
+                    <h:inputText id="userDni" label="dni" required="true" value="#{loginBean.dni}" maxlength="9" /> 
+                </li>
+                
+                <li>
+                    <h:outputLabel for="userPassword" value="Contraseña" />
+                    <h:inputSecret id="userPassword" label="contraseña" required="true" value="#{loginBean.pwd}" maxlength="45"/>
+                </li>
+                
+                <li>
+                    <h:commandButton  action="#{loginBean.doLogin()}" value="Iniciar Sesión">
+                    <!--<f:ajax execute="@form" render="ajaxError"/> -->
+                    </h:commandButton>
+                </li>
+                
+                <!--<li>
+                    <h:outputText value="#{loginBean.error}" id="ajaxError"/>
+                </li> -->
+            </ul>
+
+          </h:form>
+        </div>
+    </h:body>
+</html>
+
