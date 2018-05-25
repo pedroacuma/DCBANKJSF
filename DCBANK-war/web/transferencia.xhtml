@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Transferencia</title>
+        <h:outputStylesheet  library="css" name="login.css"/>
+    </h:head>
+    <h:body>
+        <div class="loginform cf">
+            <h:form>
+                <lu>
+                    <li>
+                        <h:outputLabel value="Nombre Usuario" />
+                        <h:inputText readonly="true" value="#{transferenciaBean.loggerUser.nombre} #{transferenciaBean.loggerUser.apellidos}"/>
+                    </li>
+                    <li>
+                        <h:outputLabel value="DNI"/>
+                        <h:inputText readonly="true" value="#{transferenciaBean.loggerUser.dni}" maxlength="9"/>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Cuenta Origen"/>
+                        <h:inputText readonly="true" value="#{transferenciaBean.cuenta.iban}" maxlength="24"/>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Cuenta Destino"/>
+                        <h:inputText value="#{transferenciaBean.ibanDestino}" maxlength="24"/>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Importe a Transferir"/>
+                        <h:inputText value="#{transferenciaBean.importe}"/>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Concepto Transferencia"/>
+                        <h:inputText value="#{transferenciaBean.concepto}"/>
+                    </li>
+                    <li>
+                        <h:commandButton value="Enviar" action="#{transferenciaBean.operacion()}"/>
+                    </li>
+                </lu>
+                <h:outputLabel value="#{transferenciaBean.error}"/>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

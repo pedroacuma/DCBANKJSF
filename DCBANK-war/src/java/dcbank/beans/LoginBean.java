@@ -31,6 +31,14 @@ public class LoginBean implements Serializable {
     
     protected Usuario loggedUser;
     protected String dni,pwd,error; 
+
+    public Usuario getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(Usuario loggedUser) {
+        this.loggedUser = loggedUser;
+    }
     /**
      * Creates a new instance of LoginBean
      */
@@ -69,7 +77,7 @@ public class LoginBean implements Serializable {
             return (null);
         }
         else if( pwd.equals(aux.getPassword()) ){
-            try {
+    
             loggedUser = aux;
             dni = pwd = error = "";
             boolean empleado = loggedUser.getRol() == 1 ;
@@ -84,14 +92,8 @@ public class LoginBean implements Serializable {
                     return "empleadoPrincipal";
                     
             }else{
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();  
-                context.redirect("");
-            }
-            } catch (IOException ex) {
-                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return null;
-            
+                return "clientePrincipal";
+            }            
         }
         else{
             error = "Contraseña errónea";

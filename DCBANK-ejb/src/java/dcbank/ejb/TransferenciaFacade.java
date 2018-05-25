@@ -73,5 +73,4 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
         
         return  listaT;        
     }
-    
 }

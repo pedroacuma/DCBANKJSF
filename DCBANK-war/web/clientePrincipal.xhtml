@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cliente Principal</title>
+    </h:head>
+    <h:body>
+        
+        <!--                    Tabla Informacion Usuario               -->
+        <table border = "3"> 
+            <tr><th >Nombre y Apellidos</th></tr>
+            <tr><td>#{clientePrincipalBean.loggerUser.nombre} #{clientePrincipalBean.loggerUser.apellidos}</td></tr> 
+            <tr><th>DNI</th></tr>
+            <tr><td>#{clientePrincipalBean.loggerUser.dni}</td></tr>
+            <tr><th>Direccion</th></tr>
+            <tr><td>#{clientePrincipalBean.loggerUser.domicilio}</td></tr>
+            <tr><th>Telefono</th></tr>
+            <tr><td>#{clientePrincipalBean.loggerUser.telefono}</td></tr>
+        </table>
+       <!--                Tabla Cuenta Usuario           -->
+        <table border = "3"> 
+                <tr>
+                    <th>Cuenta Usuario</th>
+                </tr>
+                <tr>
+                    <td align="center">#{clientePrincipalBean.cuenta.iban}</td>
+                </tr>
+                
+        </table>
+        <h:form rendered="#{clientePrincipalBean.loggerUser ne null}">
+         Buscar Movimiento por <h:selectOneMenu value="-- Seleccione uno --"> 
+                <f:selectItem itemValue="A" itemLabel="Concepto" />
+                <f:selectItem itemValue="B" itemLabel="Cuenta Destino" />
+                <f:selectItem itemValue="C" itemLabel="Beneficiario" />
+             </h:selectOneMenu>
+             <br></br>         
+             <h:inputText value="#{clientePrincipalBean.movimientoBuscado}"/>        
+             <h:commandButton value="Buscar Movimiento" action="#{clientePrincipalBean.doBuscarMovimiento()}"/>
+        </h:form>
+        <!--                 Tabla MOVIMIENTOS              -->
+        <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" var="movimiento" border="3">
+            
+            <h:column>
+                <f:facet name="header">
+                    Fecha
+                </f:facet>
+                #{movimiento.fecha}
+            </h:column>
+             
+             <h:column>
+                <f:facet name="header">
+                    Cuenta Origen
+                </f:facet>
+                #{movimiento.cuenta.iban}
+            </h:column>
+             
+             <h:column>
+                <f:facet name="header">
+                    Cuenta Destino
+                </f:facet>
+                #{movimiento.cuentaDestino.iban}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Cantidad
+                </f:facet>
+                #{movimiento.cantidad}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Beneficiario
+                </f:facet>
+                #{movimiento.beneficiario}
+            </h:column>
+             
+              <h:column>
+                <f:facet name="header">
+                    Concepto
+                </f:facet>
+                #{movimiento.concepto}
+            </h:column>
+        </h:dataTable>
+       <h:link outcome="transferencia" value="Realizar Transferencia"/>
+    </h:body>
+</html>
+
