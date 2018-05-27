@@ -10,8 +10,16 @@
     <h:body>
         <div>
             <h1 align="center"> Acceso a DCbank </h1>
+            <div align="right">
+                <h:form>
+                 <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
+                 <h:commandLink value="English" action="#{language.setEnglish()}"/>
+                </h:form>
+            </div>
             <hr/>
         </div>
+        <h2><h:outputText value="#{msg.resultado}" /></h2>
+        
         <div  class="loginform cf">
             <h:form>
             <ul>
