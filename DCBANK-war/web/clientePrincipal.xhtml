@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cliente Principal</title>
     </h:head>
@@ -31,14 +32,22 @@
         </table>
         <h:form>
             Buscar Movimiento por <h:selectOneMenu  value="#{clientePrincipalBean.criterioDeBusqueda}"> 
-             <f:selectItem itemValue="A" itemLabel="Fecha" />
              <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
+             <f:selectItem itemValue="A" itemLabel="Fecha" />
              <f:selectItem itemValue="C" itemLabel="Cantidad" />
              <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
              <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
+             <f:ajax event="click" render="panelParametro" />
              </h:selectOneMenu>
-             <br></br>         
-             <h:inputText id="concepto" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}"/>
+             <br></br>
+             <h:panelGrid id="panelParametro">
+                <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
+             
+                <p:outputLabel id="labelFecha" for="popup" value="Fecha" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}"/>
+                <p:calendar id="popup" value="#{clientePrincipal.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy" readonlyInput="true"/>
+                <h:commandButton />
+             </h:panelGrid>
+             
              <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>
         </h:form>
         <!--                 Tabla MOVIMIENTOS              -->

@@ -41,7 +41,17 @@ public class ClientePrincipalBean implements Serializable {
     protected Cuenta cuenta;
     protected List<Transferencia> listaMovimientos;
     protected String movimientoBuscado;
+    protected Date fechaMov;
     String criterioDeBusqueda;
+
+
+    public Date getFechaMov() {
+        return fechaMov;
+    }
+
+    public void setFechaMov(Date fechaMov) {
+        this.fechaMov = fechaMov;
+    }
     
     
     public ClientePrincipalBean() {
@@ -98,6 +108,7 @@ public class ClientePrincipalBean implements Serializable {
             listaMovimientos = tf.buscarPorCuenta(cuenta);
             System.out.println(this.getCriterioDeBusqueda());
         }
+        
     }
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -114,10 +125,10 @@ public class ClientePrincipalBean implements Serializable {
         return "";
     }
     public void nombreChangeListener(AjaxBehaviorEvent e){
-        if(!movimientoBuscado.equals("") && !movimientoBuscado.equals("-")){
+        if(movimientoBuscado!=null && !movimientoBuscado.equals("") && !movimientoBuscado.equals("-")){
             switch (this.criterioDeBusqueda) {
                 case "A":
-                       // NO IMPLEMENTADO //
+                    listaMovimientos = tf.buscardorFecha(fechaMov, cuenta);
                     break;
                 case "B":
                     listaMovimientos = tf.buscardorCuentaDestino(movimientoBuscado,cuenta);

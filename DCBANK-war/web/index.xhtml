@@ -12,56 +12,58 @@
             <h1 align="center"> Acceso a DCbank </h1>
             <div align="right">
                 <h:form>
-                 <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
-                 <h:commandLink value="English" action="#{language.setEnglish()}"/>
+                    <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
+                    <h:commandLink value="English" action="#{language.setEnglish()}"/>
                 </h:form>
             </div>
             <hr/>
         </div>
-        
+
         <div  class="loginform cf">
             <h:form rendered="#{loginBean.loggedUser == null}">
-            
-            <h:messages style="color:red"/>
-        
-            <ul>
-                <li>
-                    <h:outputLabel  value="DNI"> <h:message id="errorDni" for="userDni" style="color:red"/><br/>
-                    <h:inputText id="userDni" label="dni" required="true" value="#{loginBean.dni}" maxlength="9"  requiredMessage=" (Introduzca DNI)">
-                       <f:ajax event="blur" render="errorDni" />
-                    </h:inputText>
-                    </h:outputLabel>
-                    
-                </li>
 
-                
-                <li>
-                    <h:outputLabel  value="Contraseña"> <h:message id="errorPwd" for="userPassword" style="color:red"/><br/>
-                    <h:inputSecret id="userPassword" label="contraseña" value="#{loginBean.pwd}" maxlength="45" required="true" requiredMessage=" (Introduzca su contraseña)">
-                        <f:ajax event="blur" render="errorPwd" />
-                    </h:inputSecret>
-                    </h:outputLabel>
-                </li>
-                
+                <h:messages style="color:red"/>
 
-                <li>
-                    <h:commandButton  id="loginButton" action="#{loginBean.doLogin()}" value="Iniciar Sesión">
-                    <f:ajax execute="@form" render="ajaxError errorDni errorPwd"/> 
-                    </h:commandButton>
-                </li>
-                
-               <li>
-                    <h:outputText value="#{loginBean.error}" id="ajaxError"/>
-                    <h:message id="errorLogin" for="loginButton" />
-                </li> 
+                <ul>
+                    <li>
+                        <h:outputLabel  value="DNI"> <h:message id="errorDni" for="userDni" style="color:red"/><br/>
+                            <h:inputText id="userDni" label="dni" required="true" value="#{loginBean.dni}" maxlength="9"  requiredMessage=" (Introduzca DNI)">
+                                <f:ajax event="blur" render="errorDni" />
+                            </h:inputText>
+                        </h:outputLabel>
 
-            </ul>
-          </h:form>
-            
-          <h:outputText value="Ya está logueado, acceda a: " rendered="#{loginBean.loggedUser!=null}"/>
-          <h:link outcome="empleadoPrincipal" rendered="#{loginBean.loggedUser.rol == 1}" value="Zona Empleado"/>
-          <h:link outcome="clientePrincipal" rendered="#{loginBean.loggedUser.rol == 0}" value="Zona Usuario"/>
+                    </li>
+
+
+                    <li>
+                        <h:outputLabel  value="Contraseña"> <h:message id="errorPwd" for="userPassword" style="color:red"/><br/>
+                            <h:inputSecret id="userPassword" label="contraseña" value="#{loginBean.pwd}" maxlength="45" required="true" requiredMessage=" (Introduzca su contraseña)">
+                                <f:ajax event="blur" render="errorPwd" />
+                            </h:inputSecret>
+                        </h:outputLabel>
+                    </li>
+
+
+                    <li>
+                        <h:commandButton  id="loginButton" action="#{loginBean.doLogin()}" value="Iniciar Sesión">
+                            <f:ajax execute="@form" render="ajaxError errorDni errorPwd"/> 
+                        </h:commandButton>
+                    </li>
+
+                    <li>
+                        <h:outputText value="#{loginBean.error}" id="ajaxError"/>
+                        <h:message id="errorLogin" for="loginButton" />
+                    </li> 
+
+                </ul>
+            </h:form>
+
+            <h:outputText value="Ya está logueado, acceda a: " rendered="#{loginBean.loggedUser!=null}"/>
+            <h:link outcome="empleadoPrincipal" rendered="#{loginBean.loggedUser.rol == 1}" value="Zona Empleado"/>
+            <h:link outcome="clientePrincipal" rendered="#{loginBean.loggedUser.rol == 0}" value="Zona Usuario"/>
         </div>
+        <br />
+
     </h:body>
 </html>
 
