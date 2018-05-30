@@ -7,21 +7,22 @@ package dcbank.beans;
 
 import java.io.Serializable;
 import java.util.Locale;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
  
 @Named(value="language")
-@Dependent
+@SessionScoped
 public class LanguageBean implements Serializable{
+  private final static Locale ENGLISH = new Locale("en","GB");
+  private final static Locale SPANISH = new Locale("es","ES");
 	public LanguageBean(){
         }
         public void setEspañol(){
-            FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("es","ES"));
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(SPANISH);
         }
         public void setEnglish(){
-            FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("en","GB"));
+             FacesContext.getCurrentInstance().getViewRoot().setLocale(ENGLISH);
         }
-	
+  }
 
-}

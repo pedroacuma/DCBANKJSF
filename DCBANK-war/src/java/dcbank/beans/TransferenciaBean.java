@@ -33,26 +33,32 @@ private LoginBean loginBean;
 @Inject
 private ClientePrincipalBean clientePrincipalBean;
 
+@Inject
+private EmpleadoPrincipalBean empleadoPrincipalBean;
+
 @EJB
 private CuentaFacade cf;
 
 @EJB
 private TransferenciaFacade tf;
 
-protected Usuario loggerUser;
+private String enlace;
+
+protected Usuario loggerUser,userTransf;
 protected Cuenta cuentaOrigen,cuentaDestino;
-protected String ibanDestino,importe,concepto,error,enlace;
+protected String ibanDestino,importe,concepto,error;
     
     public TransferenciaBean() {
     }
 
-    public Usuario getLoggerUser() {
-        return loggerUser;
+    public Usuario getUserTransf() {
+        return userTransf;
     }
 
-    public void setLoggerUser(Usuario loggerUser) {
-        this.loggerUser = loggerUser;
+    public void setUserTransf(Usuario userTransf) {
+        this.userTransf = userTransf;
     }
+    
 
     public Cuenta getCuenta() {
         return cuentaOrigen;
@@ -104,8 +110,20 @@ protected String ibanDestino,importe,concepto,error,enlace;
 
     @PostConstruct
     public void init(){
-        loggerUser = loginBean.getLoggedUser();
-        cuentaOrigen=loggerUser.getCuentaList().get(0);
+        
+        loggerUser = loginBean.getLoggedUser(); // Primero obtenemos quien se ha conectado
+        
+        if(loggerUser.getRol()==1){ // Esta accediendo el Empleado
+            userTransf = empleadoPrincipalBean.getUsuarioBuscado();
+            cuentaOrigen= empleadoPrincipalBean.getCuentaUsuario();
+                    System.out.println("HOLA init() transferencia empleado");
+            
+        }else{ // Esta accediendo el cliente
+            userTransf = loggerUser;
+            cuentaOrigen=loggerUser.getCuentaList().get(0);
+            System.out.println("HOLA init() transferencia para cliente");
+        }
+        
     }
     
     public String operacion(){
@@ -126,27 +144,30 @@ protected String ibanDestino,importe,concepto,error,enlace;
                     Transferencia t1 = new Transferencia();
                     t1.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
                     t1.setCantidad(Integer.parseInt(importe) * (-1));
-                    t1.setConcepto("Trasferencia-" + concepto);
+                    t1.setConcepto("Transferencia-" + concepto);
                     t1.setCuenta(cuentaOrigen);
                     t1.setCuentaDestino(cuentaDestino);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); 
-                    Date fechaAct = new  Date();
-                    String fecha = formato.format(fechaAct);
-                    t1.setFecha(fecha);
+                    t1.setFecha(new  Date());
                     
                     tf.create(t1);
                     
                     Transferencia t2 = new Transferencia();
                     t2.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
-                    t2.setConcepto("Trasferencia-" + concepto);
+                    t2.setConcepto("Transferencia-" + concepto);
                     t2.setCantidad(Integer.parseInt(importe));
                     t2.setCuenta(cuentaDestino);
                     t2.setCuentaDestino(cuentaOrigen);
-                    t2.setFecha(fecha);
+                    t2.setFecha(new  Date());
                     
                     tf.create(t2);
-                       clientePrincipalBean.init();
+                    if(loggerUser.getRol()!= 1){
+                        clientePrincipalBean.init();
                        return "clientePrincipal";
+                    }else{
+                        empleadoPrincipalBean.reLoader();
+                        return "empleadoPrincipal";
+                    }
+                       
                 } else {
                     error = "Saldo de cuenta origen insuficiente";
                     enlace="";

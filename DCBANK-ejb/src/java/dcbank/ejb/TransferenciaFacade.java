@@ -7,6 +7,7 @@ package dcbank.ejb;
 
 import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -37,11 +38,8 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
         q.setParameter("cuenta", cuenta);
         
         List<Transferencia> listaMovimientos;
-        try{
-           listaMovimientos = (List<Transferencia>) q.getResultList();
-        }catch(Exception ex){
-           listaMovimientos = null;
-        }
+      
+        listaMovimientos = (List<Transferencia>) q.getResultList();
         
         return  listaMovimientos;        
     }
@@ -73,4 +71,73 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
         
         return  listaT;        
     }
+    //--------------------------CONSULTAS PARA BUSCADOR AJAX----------------------//
+    public List<Transferencia> buscardorConcepto (String concepto, Cuenta cuenta) {
+        String cadena = "%" + concepto.replace(" ", "%") + "%" ;
+        Query q;
+        q = em.createQuery("SELECT t FROM Transferencia t where t.concepto LIKE :concepto AND t.cuenta= :cuenta");
+        q.setParameter("concepto", cadena);
+        q.setParameter("cuenta", cuenta);
+        
+        List<Transferencia> listaT;
+        listaT = (List<Transferencia>) q.getResultList();
+        return  listaT;        
+    }
+    
+    public List<Transferencia> buscardorFecha (Date fecha, Cuenta cuenta) {
+        Query q;
+        q = em.createQuery("SELECT t FROM Transferencia t where t.fecha LIKE :concepto AND t.cuenta= :cuenta");
+        q.setParameter("concepto", fecha);
+        q.setParameter("cuenta", cuenta);
+        
+        List<Transferencia> listaT;
+        
+        listaT = (List<Transferencia>) q.getResultList();
+        
+        return  listaT;        
+    }
+      
+     public List<Transferencia> buscardorCuentaDestino (String concepto, Cuenta cuenta) {
+        String cadena = "%" + concepto.replace(" ", "%") + "%" ;
+        Query q;
+        q = em.createQuery("SELECT t FROM Transferencia t where t.cuentaDestino.iban LIKE :concepto AND t.cuenta= :cuenta");
+        q.setParameter("concepto", cadena);
+        q.setParameter("cuenta", cuenta);
+        
+        List<Transferencia> listaT;
+        
+        listaT = (List<Transferencia>) q.getResultList();
+        
+        return  listaT;        
+    } 
+     public List<Transferencia> buscardorBeneficiario (String concepto, Cuenta cuenta) {
+        String cadena = "%" + concepto.replace(" ", "%") + "%" ;
+        Query q;
+        q = em.createQuery("SELECT t FROM Transferencia t where t.beneficiario LIKE :concepto AND t.cuenta= :cuenta");
+        q.setParameter("concepto", cadena);
+        q.setParameter("cuenta", cuenta);
+        
+        List<Transferencia> listaT;
+        
+        listaT = (List<Transferencia>) q.getResultList();
+        
+        return  listaT;        
+    } 
+    
+      public List<Transferencia> buscardorCantidad (String concepto, Cuenta cuenta) {
+        Query q;
+        q = em.createQuery("SELECT t FROM Transferencia t where t.cantidad LIKE :concepto AND t.cuenta= :cuenta");
+        q.setParameter("concepto", Integer.parseInt(concepto));
+        q.setParameter("cuenta", cuenta);
+        
+        List<Transferencia> listaT;
+        
+        listaT = (List<Transferencia>) q.getResultList();
+        
+        return  listaT;        
+    }
+
+
+    
 }
+

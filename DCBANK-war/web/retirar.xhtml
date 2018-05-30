@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Realizar retirada</title>
+        <h:outputStylesheet  library="css" name="login.css"/>
+    </h:head>
+    <h:body>
+        <div class="loginform cf">
+        <h:form>
+            <lu>
+                <li>
+                    <h:outputLabel value="Nombre Usuario" />
+                    <h:inputText readonly="true" value="#{empleadoPrincipalBean.usuarioBuscado.nombre} #{empleadoPrincipalBean.usuarioBuscado.apellidos}"/>
+                </li>
+                <li>
+                    <h:outputLabel value="DNI" />
+                    <h:inputText readonly="true" value="#{empleadoPrincipalBean.usuarioBuscado.dni}" maxlength="9"/>
+                </li>
+                <li>
+                    <h:outputLabel value="Cuenta Usuario" />
+                    <h:inputText readonly="true" value="#{retirarBean.cuenta.iban}" maxlength="24"/>
+                </li>
+                <li>
+                    <h:outputLabel value="Importe a Retirar" /> 
+                    <h:inputText value="#{retirarBean.importe}"/>
+                </li>
+                <li>
+                    <h:outputLabel value="Concepto" />
+                    <h:inputText value="#{retirarBean.concepto}"/>
+                </li>
+                <li>
+                    <h:commandButton value="Enviar" action="#{retirarBean.operacion()}"/>
+                </li>
+                <h:outputLabel value="#{retirarBean.error}"/>
+            </lu>
+            
+            
+        </h:form>
+        </div>
+    </h:body>
+</html>
+

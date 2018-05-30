@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title><h:outputText value="#{msg.registrarMovimiento}" /></title>
+        <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
+    </h:head>
+    <body>
+        <h1 align="center"><h:outputText value="#{msg.zonaEmpleado}"/></h1>
+        <div align="right">
+          <h:form>
+            <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
+            <h:commandLink value="English" action="#{language.setEnglish()}"/>
+          </h:form>
+        </div>
+        <hr></hr>
+        <p align="right"><h:link outcome="empleadoPrincipal" value="#{msg.volverAtras}"/></p>
+        <h1 align="left"><h:outputText value="#{msg.registrarMovimiento}"/></h1>
+        <div align="left">
+            <ul>
+                <li><p><h:link outcome="transferencia" value="#{msg.realizarTransferencia}"/></p></li>
+                <li><p><h:link outcome="ingresar" value="#{msg.realizarIngreso}"/></p></li>
+                <li><p><h:link outcome="retirar" value="#{msg.realizarRetirada}"/></p></li>
+            </ul>   
+        </div>
+    </body>
+</html>

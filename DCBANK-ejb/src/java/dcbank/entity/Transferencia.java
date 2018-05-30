@@ -6,6 +6,7 @@
 package dcbank.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -45,9 +48,9 @@ public class Transferencia implements Serializable {
     private Integer idMovimiento;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "fecha")
-    private String fecha;
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
@@ -76,7 +79,7 @@ public class Transferencia implements Serializable {
         this.idMovimiento = idMovimiento;
     }
 
-    public Transferencia(Integer idMovimiento, String fecha, int cantidad, String beneficiario, String concepto) {
+    public Transferencia(Integer idMovimiento, Date fecha, int cantidad, String beneficiario, String concepto) {
         this.idMovimiento = idMovimiento;
         this.fecha = fecha;
         this.cantidad = cantidad;
@@ -92,11 +95,11 @@ public class Transferencia implements Serializable {
         this.idMovimiento = idMovimiento;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

@@ -1,41 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Transferencia</title>
+        <title><h:outputText value="#{msg.transferencia}"/></title>
         <h:outputStylesheet  library="css" name="login.css"/>
     </h:head>
     <h:body>
+        <h1 align="left"><h:outputText value="#{msg.transferencia}"/></h1>
+        <div align="right">
+            <h:form>
+                 <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
+                 <h:commandLink value="English" action="#{language.setEnglish()}"/>
+            </h:form>
+        </div>
         <div class="loginform cf">
             <h:form>
                 <lu>
                     <li>
-                        <h:outputLabel value="Nombre Usuario" />
-                        <h:inputText readonly="true" value="#{transferenciaBean.loggerUser.nombre} #{transferenciaBean.loggerUser.apellidos}"/>
+                        <h:outputLabel value="#{msg.nombreUsuario}" />
+                        <h:inputText readonly="true" value="#{transferenciaBean.userTransf.nombre} #{transferenciaBean.userTransf.apellidos}"/>
                     </li>
                     <li>
                         <h:outputLabel value="DNI"/>
-                        <h:inputText readonly="true" value="#{transferenciaBean.loggerUser.dni}" maxlength="9"/>
+                        <h:inputText readonly="true" value="#{transferenciaBean.userTransf.dni}" maxlength="9"/>
                     </li>
                     <li>
-                        <h:outputLabel value="Cuenta Origen"/>
+                        <h:outputLabel value="#{msg.cuentaOrigen}"/>
                         <h:inputText readonly="true" value="#{transferenciaBean.cuenta.iban}" maxlength="24"/>
                     </li>
                     <li>
-                        <h:outputLabel value="Cuenta Destino"/>
-                        <h:inputText value="#{transferenciaBean.ibanDestino}" maxlength="24"/>
+                        <h:outputLabel value="#{msg.cuentaDestino}"> <h:message id="msg" for="ibanDestino" style="color:red"/>
+                        <h:inputText id="ibanDestino" value="#{transferenciaBean.ibanDestino}" required="true" requiredMessage=" (Campo requerido)" maxlength="24">
+                            <f:ajax event="blur" render="msg"/>
+                        </h:inputText>
+                        </h:outputLabel>
                     </li>
                     <li>
-                        <h:outputLabel value="Importe a Transferir"/>
+                        <h:outputLabel value="#{msg.importeATransferir}"/>
                         <h:inputText value="#{transferenciaBean.importe}"/>
                     </li>
                     <li>
-                        <h:outputLabel value="Concepto Transferencia"/>
+                        <h:outputLabel value="#{msg.conceptoTransferencia}"/>
                         <h:inputText value="#{transferenciaBean.concepto}"/>
                     </li>
                     <li>
-                        <h:commandButton value="Enviar" action="#{transferenciaBean.operacion()}"/>
+                        <h:commandButton value="#{msg.enviar}" action="#{transferenciaBean.operacion()}"/>
                     </li>
                 </lu>
                 <h:outputLabel value="#{transferenciaBean.error}"/>

@@ -138,11 +138,18 @@ public class EmpleadoPrincipalBean implements Serializable {
         if (usuarioBuscado != null){
             cuentaUsuario = usuarioBuscado.getCuentaList().get(0);
             listaMovimientos = cuentaUsuario.getTransferenciaList();
+            System.err.println("Usuario y cuenta buscado");
         }else{
             cuentaUsuario = null;
             listaMovimientos = null;
         }
         
+        return "";
+    }
+    
+    public String reLoader(){
+        cuentaUsuario = usuarioBuscado.getCuentaList().get(0);
+        listaMovimientos = tf.buscarPorCuenta(cuentaUsuario);
         return "";
     }
     
@@ -193,7 +200,7 @@ public class EmpleadoPrincipalBean implements Serializable {
     }
 
     private String doSalir() {
-        System.out.println("La hemos liao");
+        System.out.println("doSalir");
         return "index";
     }
 }

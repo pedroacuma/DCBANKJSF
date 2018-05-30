@@ -10,13 +10,18 @@ import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -36,7 +41,8 @@ public class ClientePrincipalBean implements Serializable {
     protected Cuenta cuenta;
     protected List<Transferencia> listaMovimientos;
     protected String movimientoBuscado;
-    protected String criterioDeBusqueda;
+    String criterioDeBusqueda;
+    
     
     public ClientePrincipalBean() {
     }
@@ -90,44 +96,48 @@ public class ClientePrincipalBean implements Serializable {
         if(loggerUser != null && loggerUser.getRol()!= 1){
             cuenta = loggerUser.getCuentaList().get(0);
             listaMovimientos = tf.buscarPorCuenta(cuenta);
+            System.out.println(this.getCriterioDeBusqueda());
         }
+    }
+    public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        loginBean.setLoggedUser(null);
+        return "index.xhtml?faces-redirect=true";
     }
    
     public String doBuscarMovimiento(){
-        
-        listaMovimientos = cuenta.getTransferenciaList();
-        
+       listaMovimientos = cuenta.getTransferenciaList();
         if(!this.movimientoBuscado.equals("")){
-       
-            List<Transferencia> listaM = new ArrayList<>();
-            if (this.criterioDeBusqueda.equals("A")){
-                //Concepto
-                for (Transferencia m : listaMovimientos){
-                    if (m.getConcepto().contains(this.movimientoBuscado)){
-                        listaM.add(m);
-                    }
-                }
-                listaMovimientos = listaM;
-            }else if (this.criterioDeBusqueda.equals("B")){
-                //Cuenta Destino
-                for(Transferencia m : listaMovimientos){
-                    if (m.getCuentaDestino() != null){
-                        if (m.getCuentaDestino().getIban().contains(this.movimientoBuscado)){
-                        listaM.add(m);
-                        }
-                    }
-                }
-                listaMovimientos = listaM;
-            }else if (this.criterioDeBusqueda.equals("C")){
-                //Beneficiario
-                for (Transferencia m : listaMovimientos){
-                    if (m.getBeneficiario().contains(this.movimientoBuscado)){
-                        listaM.add(m);
-                    }
-                }
-                listaMovimientos = listaM;
-            } 
+  
+            
         }
         return "";
+    }
+    public void nombreChangeListener(AjaxBehaviorEvent e){
+        if(!movimientoBuscado.equals("") && !movimientoBuscado.equals("-")){
+            switch (this.criterioDeBusqueda) {
+                case "A":
+                       // NO IMPLEMENTADO //
+                    break;
+                case "B":
+                    listaMovimientos = tf.buscardorCuentaDestino(movimientoBuscado,cuenta);
+                    break;
+                case "C":
+                    listaMovimientos = tf.buscardorCantidad(movimientoBuscado,cuenta);
+                    break;
+                case "D":
+                    listaMovimientos = tf.buscardorBeneficiario(movimientoBuscado,cuenta);
+                    break;
+                case "E":
+                    listaMovimientos = tf.buscardorConcepto(movimientoBuscado,cuenta);
+                    break;
+                default:
+                    listaMovimientos = cuenta.getTransferenciaList();
+                    break;
+            }
+        }else{
+            listaMovimientos = cuenta.getTransferenciaList();
+        }
+            
     }
 }

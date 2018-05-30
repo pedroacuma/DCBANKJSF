@@ -13,9 +13,11 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -73,26 +75,18 @@ public class LoginBean implements Serializable {
         Usuario aux = this.usuarioFacade.find(dni);
         
         if(aux==null){
-            error = "DNI erróneo";
+            error = "DNI no registrado";
             return (null);
         }
         else if( pwd.equals(aux.getPassword()) ){
     
             loggedUser = aux;
-            dni = pwd = error = "";
             boolean empleado = loggedUser.getRol() == 1 ;
             if(empleado){
-                    //Profesor
-                    //FacesContext.getCurrentInstance().getExternalContext().dispatch("zonaEmpleado");
-                    //FacesContext context = FacesContext.getCurrentInstance();
-                    //context.getApplication().getNavigationHandler().handleNavigation(context, null, "/faces/empleadoPrincipal.xhtml");
-                    //Yo
-                    //ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();  
-                    //context.redirect("empleadoPrincipal.xhtml");
-                    return "empleadoPrincipal";
+                    return "empleadoPrincipal?faces-redirect=true";
                     
             }else{
-                return "clientePrincipal";
+                return "clientePrincipal?faces-redirect=true";
             }            
         }
         else{

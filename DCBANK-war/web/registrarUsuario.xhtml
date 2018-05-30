@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title> Registrar  </title>
+        <h:outputStylesheet  library="css" name="login.css"/>
+    </h:head>
+    <h:body>
+        <div>
+            <h1 align="center"> Registrar Usuario </h1>
+            <div align="right">
+                <h:form>
+                 <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
+                 <h:commandLink value="English" action="#{language.setEnglish()}"/>
+                </h:form>
+            </div>
+            <hr/>
+        </div>
+        
+        <div  class="loginform cf">
+            <h:form>
+            <ul>
+               <li>
+                   <h:outputLabel value="DNI"> <h:message id="dniInvalido" for="userDni" style="color:red" />
+                   <h:inputText id="userDni" label="dni" required="true" value="#{registrarUsuarioBean.usuario.dni}" maxlength="9" requiredMessage="Se requiere el DNI">
+                       <f:validator validatorId="dniValidator"/>
+                       <f:ajax  event="blur" render="dniInvalido" />
+                   </h:inputText>
+                   </h:outputLabel>
+               </li>
+
+               <li>
+                   <h:commandButton  action="#{registrarUsuarioBean.doRegistrar()}" value="Iniciar Sesión">
+                   </h:commandButton>
+               </li>
+
+            </ul>
+                
+          </h:form>
+        </div>
+    </h:body>
+</html>
+

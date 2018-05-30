@@ -4,14 +4,26 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Empleado Principal</title>
+        <title><h:outputText value="#{msg.empleadoPrincipal}" /></title>
+        <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
     </h:head>
     <h:body>
-         <h1>Empleado Principal</h1>
-
+        <h1><h:outputText value="#{msg.empleadoPrincipal}" /></h1>
+         <div align="right">
+          <h:form>
+              <h:commandLink value="Español" action="#{language.setEspañol()}">
+                  <img src="images/es_flag.png"/> |
+              </h:commandLink>
+                 
+              <h:commandLink value="English" action="#{language.setEnglish()}">
+                  <img src="images/en_flag.png"/>
+              </h:commandLink>
+          </h:form>
+        </div>
+        <div class="loginform cf">
         <h:form>
             <h:inputText value="#{empleadoPrincipalBean.dniBuscado}"/>
-            <h:commandButton value="Buscar Cliente" action="#{empleadoPrincipalBean.doBuscarUsuario()}"/>
+            <h:commandButton value="#{msg.buscarCliente}" action="#{empleadoPrincipalBean.doBuscarUsuario()}"/>
         </h:form>
          
          <br></br>
@@ -19,7 +31,7 @@
          <!--Tabla con los datos del usuario-->
          <table border = "3"> 
                 <tr>
-                    <th>Nombre y Apellidos</th>
+                    <th><h:outputText value="#{msg.nombreYApellido}"/></th>
                 </tr>
                 <tr>
                     <td align="center">#{empleadoPrincipalBean.usuarioBuscado.nombre} #{empleadoPrincipalBean.usuarioBuscado.apellidos}</td>
@@ -31,7 +43,7 @@
                     <td align="center">#{empleadoPrincipalBean.usuarioBuscado.dni}</td>
                 </tr>
                 <tr>
-                    <th>Direccion</th>
+                    <th><h:outputText value="#{msg.direccion}"/></th>
                 </tr>
                 <tr>
                     <td align="center">#{empleadoPrincipalBean.usuarioBuscado.domicilio}</td>
@@ -43,10 +55,12 @@
          <!--Tabla para las cuentas-->
          <table border = "3"> 
                 <tr>
-                    <th>Cuenta Usuario</th>
+                    <th><h:outputText value="#{msg.cuentaUsuario}"/></th>
+                    <th><h:outputText value="#{msg.saldo}"/></th>
                 </tr>
                 <tr>
                     <td align="center">#{empleadoPrincipalBean.cuentaUsuario.iban}</td>
+                    <td algin="center">#{empleadoPrincipalBean.cuentaUsuario.saldo}</td>
                 </tr>
         </table>
                
@@ -54,14 +68,14 @@
                
          <!--Buscador de Movimientos-->
          <h:form rendered="#{empleadoPrincipalBean.usuarioBuscado ne null}">
-         Buscar Movimiento por <h:selectOneMenu value="#{empleadoPrincipalBean.criterioDeBusqueda}"> 
-                <f:selectItem itemValue="A" itemLabel="Concepto" />
-                <f:selectItem itemValue="B" itemLabel="Cuenta Destino" />
-                <f:selectItem itemValue="C" itemLabel="Beneficiario" />
+             <h:outputText value="#{msg.buscarMovimiento}"/> <h:selectOneMenu value="#{empleadoPrincipalBean.criterioDeBusqueda}"> 
+                <f:selectItem itemValue="A" itemLabel="#{msg.concepto}" />
+                <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
+                <f:selectItem itemValue="C" itemLabel="#{msg.beneficiario}" />
              </h:selectOneMenu>
              <br></br>         
              <h:inputText value="#{empleadoPrincipalBean.movimientoBuscado}"/>        
-             <h:commandButton value="Buscar Movimiento" action="#{empleadoPrincipalBean.doBuscarMovimiento()}"/>
+             <h:commandButton value="#{msg.buscarMovimiento}" action="#{empleadoPrincipalBean.doBuscarMovimiento()}"/>
         </h:form>
          
          <br></br>
@@ -85,34 +99,36 @@
              
              <h:column>
                 <f:facet name="header">
-                    Cuenta Destino
+                    <h:outputText value="#{msg.cuentaDestino}"/>
                 </f:facet>
                 #{movimiento.cuentaDestino.iban}
             </h:column>
              
               <h:column>
                 <f:facet name="header">
-                    Cantidad
+                    <h:outputText value="#{msg.cantidad}"/>
                 </f:facet>
                 #{movimiento.cantidad}
             </h:column>
              
               <h:column>
                 <f:facet name="header">
-                    Beneficiario
+                    <h:outputText value="#{msg.beneficiario}" />
                 </f:facet>
                 #{movimiento.beneficiario}
             </h:column>
              
               <h:column>
                 <f:facet name="header">
-                    Concepto
+                    <h:outputText value="#{msg.concepto}" />
                 </f:facet>
                 #{movimiento.concepto}
             </h:column>
              
         </h:dataTable>
-         
+         <!--<h:link outcome="transferencia" value="#{msg.realizarTransferencia}"/> -->
+         <h:link outcome="registrarMovimiento" value="#{msg.registrarMovimiento}"/>
+        </div>
     </h:body>
 </html>
 
