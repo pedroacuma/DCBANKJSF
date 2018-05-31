@@ -86,8 +86,9 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
     
     public List<Transferencia> buscardorFecha (Date fecha, Cuenta cuenta) {
         Query q;
-        q = this.em.createNamedQuery("Transferencia.findByFecha");
+        q = this.em.createQuery("SELECT t FROM Transferencia t WHERE t.fecha = :fecha AND t.cuenta = :cuenta");
         q.setParameter("fecha", fecha);
+        q.setParameter("cuenta", cuenta);
         
         List<Transferencia> listaT;
         

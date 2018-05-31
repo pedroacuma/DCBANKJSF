@@ -44,12 +44,13 @@
                 <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
              
                 <p:outputLabel id="labelFecha" for="popup" value="Fecha" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}"/>
-                <p:calendar id="popup" value="#{clientePrincipal.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy" readonlyInput="true"/>
-                <h:commandButton />
+                <p:calendar id="popup" value="#{clientePrincipalBean.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy" readonlyInput="true">
+                    <p:ajax event="dateSelect" listener="#{clientePrincipalBean.dateSelect()}" update="tabla"/>
+                </p:calendar>
              </h:panelGrid>
              
              <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>
-        </h:form>
+        
         <!--                 Tabla MOVIMIENTOS              -->
         <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" id="tabla" var="movimiento" border="3">
             
@@ -99,6 +100,7 @@
                 #{movimiento.concepto}
             </h:column>
         </h:dataTable>
+        </h:form>
         <h:link outcome="transferencia" value="#{msg.realizarTransferencia}" />
        <h:form>
            <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/>
