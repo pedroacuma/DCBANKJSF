@@ -3,6 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{languageBean.locale}">
+
     <h:head>
         <title><h:outputText value="#{msg.transferencia}"/></title>
         <h:outputStylesheet  library="css" name="login.css"/>
@@ -11,9 +13,13 @@
         <h1 align="left"><h:outputText value="#{msg.transferencia}"/></h1>
         <div align="right">
             <h:form>
-                 <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
-                 <h:commandLink value="English" action="#{language.setEnglish()}"/>
-            </h:form>
+              <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                  <img src="resources/images/es_flag.png"/>
+              </h:commandLink>&nbsp;
+              <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                  <img src="resources/images/en_flag.png"/>
+              </h:commandLink>
+          </h:form>
         </div>
         <div class="loginform cf">
             <h:form>
@@ -53,5 +59,6 @@
             </h:form>
         </div>
     </h:body>
+    </f:view>
 </html>
 

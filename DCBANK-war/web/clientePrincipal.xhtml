@@ -4,107 +4,131 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{languageBean.locale}">
+
     <h:head>
         <title>Cliente Principal</title>
+        <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"/>
     </h:head>
-    <h:body>
+    <h:body style="background-color: #2ECC71">
         
-        <!--                    Tabla Informacion Usuario               -->
-        <table border = "3"> 
-            <tr><th ><h:outputText value="#{msg.nombreYApellido}"/></th></tr>
-            <tr><td>#{clientePrincipalBean.loggerUser.nombre} #{clientePrincipalBean.loggerUser.apellidos}</td></tr> 
-            <tr><th>DNI</th></tr>
-            <tr><td>#{clientePrincipalBean.loggerUser.dni}</td></tr>
-            <tr><th><h:outputText value="#{msg.direccion}"/></th></tr>
-            <tr><td>#{clientePrincipalBean.loggerUser.domicilio}</td></tr>
-            <tr><th><h:outputText value="#{msg.telefono}"/></th></tr>
-            <tr><td>#{clientePrincipalBean.loggerUser.telefono}</td></tr>
-        </table>
-       <!--                Tabla Cuenta Usuario           -->
-        <table border = "3"> 
-                <tr>
-                    <th><h:outputText value="#{msg.cuentaUsuario}"/></th>
-                </tr>
-                <tr>
-                    <td align="center">#{clientePrincipalBean.cuenta.iban}</td>
-                </tr>
-                
-        </table>
-        <h:form>
-            Buscar Movimiento por <h:selectOneMenu  value="#{clientePrincipalBean.criterioDeBusqueda}"> 
-             <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
-             <f:selectItem itemValue="A" itemLabel="Fecha" />
-             <f:selectItem itemValue="C" itemLabel="Cantidad" />
-             <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
-             <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
-             <f:ajax event="click" render="panelParametro" />
-             </h:selectOneMenu>
-             <br></br>
-             <h:panelGrid id="panelParametro">
-                <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
-             
-                <p:outputLabel id="labelFecha" for="popup" value="Fecha" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}"/>
-                <p:calendar id="popup" value="#{clientePrincipalBean.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy" readonlyInput="true">
+            <br></br>
+            <h1 align="center">#{msg['zonaCliente']}</h1>
+            <div align="right">
+       
+                <h:form>
+                | <h:link outcome="transferencia" value="#{msg.realizarTransferencia}"/> |
+                <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/> |
+                <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                <img src="resources/images/es_flag.png"/>
+                </h:commandLink>&nbsp;
+                <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                  <img src="resources/images/en_flag.png"/>
+                </h:commandLink>
+                </h:form>
+            </div>
+        
+        <hr/>
+        <div class="container" style="max-width: 100%">    
+            <div class="row justify-content-md-center">
+              <div class="col-sm-0">
+                <!--                    Tabla Informacion Usuario               -->
+                <table  border = "1"> 
+                    <tr><th ><h:outputText value="#{msg.nombreYApellido}"/></th></tr>
+                    <tr><td>#{clientePrincipalBean.loggerUser.nombre} #{clientePrincipalBean.loggerUser.apellidos}</td></tr> 
+                    <tr><th>DNI</th></tr>
+                    <tr><td>#{clientePrincipalBean.loggerUser.dni}</td></tr>
+                    <tr><th><h:outputText value="#{msg.direccion}"/></th></tr>
+                    <tr><td>#{clientePrincipalBean.loggerUser.domicilio}</td></tr>
+                    <tr><th><h:outputText value="#{msg.telefono}"/></th></tr>
+                    <tr><td>#{clientePrincipalBean.loggerUser.telefono}</td></tr>
+                </table>
+              </div>
+              <div class="col-sm-0">
+                <table  border = "1"> 
+                    <tr>
+                        <th><h:outputText value="#{msg.cuentaUsuario}"/></th>
+                    </tr>
+                    <tr>
+                        <td align="center">#{clientePrincipalBean.cuenta.iban}</td>
+                    </tr>
+                </table>
+              </div>
+              <div class="col-sm-0">
+               <h:form>
+                   
+                   <div class="row justify-content-center">
+                    <h:outputLabel value="#{msg.buscarMovimiento}" />
+                    <h:panelGrid id="panelParametro">
+                    <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" 
+                                 rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
+
+                    <p:calendar id="popup" value="#{clientePrincipalBean.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy">
                     <p:ajax event="dateSelect" listener="#{clientePrincipalBean.dateSelect()}" update="tabla"/>
-                </p:calendar>
-             </h:panelGrid>
-             
-             <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>
-        
-        <!--                 Tabla MOVIMIENTOS              -->
-        <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" id="tabla" var="movimiento" border="3">
-            
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{msg.fecha}"/>
-                </f:facet>
+                    </p:calendar>
+                    </h:panelGrid>
+                    <h:selectOneMenu  value="#{clientePrincipalBean.criterioDeBusqueda}"> 
+                    <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
+                    <f:selectItem itemValue="A" itemLabel="Fecha" />
+                    <f:selectItem itemValue="C" itemLabel="Cantidad" />
+                    <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
+                    <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
+                    <f:ajax event="click" render="panelParametro" />
+                    </h:selectOneMenu>
+                   </div>
+                       
+                    <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>    
+                    <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" id="tabla" var="movimiento" border="1">
+                    <h:column>
+                        
+                        <f:facet name="header">
+                         <h:outputText value="#{msg.fecha}"/>
+                        </f:facet>
                 
-                <h:outputText value="#{movimiento.fecha}">
-                    <f:convertDateTime  type="date" pattern="dd/MM/yyyy"/>
-                </h:outputText>
+                        <h:outputText value="#{movimiento.fecha}">
+                            <f:convertDateTime  type="date" pattern="dd/MM/yyyy"/>
+                         </h:outputText>
                
-            </h:column>
-             
-             <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{msg.cuentaOrigen}"/>
-                </f:facet>
-                #{movimiento.cuenta.iban}
-            </h:column>
-             
-             <h:column>
-                <f:facet name="header">
+                    </h:column>
+                    <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg.cuentaOrigen}"/>
+                    </f:facet>
+                    #{movimiento.cuenta.iban}
+                    </h:column>
+                    <h:column>
+                    <f:facet name="header">
                     <h:outputText value="#{msg.cuentaDestino}"/>
-                </f:facet>
-                #{movimiento.cuentaDestino.iban}
-            </h:column>
-             
-              <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{msg.cantidad}"/>
-                </f:facet>
-                #{movimiento.cantidad}
-            </h:column>
-             
-              <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{msg.beneficiario}"/>
-                </f:facet>
-                #{movimiento.beneficiario}
-            </h:column>
-             
-              <h:column>
-                <f:facet name="header">
-                    <h:outputText value="#{msg.concepto}"/>
-                </f:facet>
-                #{movimiento.concepto}
-            </h:column>
-        </h:dataTable>
-        </h:form>
-        <h:link outcome="transferencia" value="#{msg.realizarTransferencia}" />
-       <h:form>
-           <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/>
-       </h:form>
+                    </f:facet>
+                        #{movimiento.cuentaDestino.iban}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.cantidad}"/>
+                        </f:facet>
+                        #{movimiento.cantidad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.beneficiario}"/>
+                        </f:facet>
+                        #{movimiento.beneficiario}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.concepto}"/>
+                        </f:facet>
+                        #{movimiento.concepto}
+                    </h:column>
+                    </h:dataTable>
+             </h:form>
+              </div>
+                
+            </div>
+        </div>
+        
     </h:body>
+    </f:view>
 </html>
 

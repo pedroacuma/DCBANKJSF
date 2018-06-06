@@ -3,6 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{languageBean.locale}">
+        
     <h:head>
         <title><h:outputText value="#{msg.empleadoPrincipal}" /></title>
         <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
@@ -11,12 +13,11 @@
         <h1><h:outputText value="#{msg.empleadoPrincipal}" /></h1>
          <div align="right">
           <h:form>
-              <h:commandLink value="Español" action="#{language.setEspañol()}">
-                  <img src="images/es_flag.png"/> |
+              <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                  <img src="resources/images/es_flag.png"/>
               </h:commandLink>
-                 
-              <h:commandLink value="English" action="#{language.setEnglish()}">
-                  <img src="images/en_flag.png"/>
+              <h:commandLink action="#{languageBean.setEnglish('en')}">
+                  <img src="resources/images/en_flag.png"/>
               </h:commandLink>
           </h:form>
         </div>
@@ -130,5 +131,6 @@
          <h:link outcome="registrarMovimiento" value="#{msg.registrarMovimiento}"/>
         </div>
     </h:body>
+    </f:view>
 </html>
 

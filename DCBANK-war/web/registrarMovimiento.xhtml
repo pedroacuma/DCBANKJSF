@@ -6,17 +6,25 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"      
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{languageBean.locale}">
+
+    
     <h:head>
         <title><h:outputText value="#{msg.registrarMovimiento}" /></title>
         <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
     </h:head>
-    <body>
+    <h:body>
         <h1 align="center"><h:outputText value="#{msg.zonaEmpleado}"/></h1>
         <div align="right">
           <h:form>
-            <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
-            <h:commandLink value="English" action="#{language.setEnglish()}"/>
+              <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                  <img src="resources/images/es_flag.png"/>
+              </h:commandLink>&nbsp;
+              <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                  <img src="resources/images/en_flag.png"/>
+              </h:commandLink>
           </h:form>
         </div>
         <hr></hr>
@@ -29,5 +37,6 @@ and open the template in the editor.
                 <li><p><h:link outcome="retirar" value="#{msg.realizarRetirada}"/></p></li>
             </ul>   
         </div>
-    </body>
+    </h:body>
+    </f:view>
 </html>

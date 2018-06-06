@@ -9,12 +9,16 @@
     </h:head>
     <h:body>
         <div>
-            <h1 align="center"> Acceso a DCbank </h1>
+            <h1 align="center">#{msg.accesoPrincipal}</h1>
             <div align="right">
                 <h:form>
-                    <h:commandLink value="Español" action="#{language.setEspañol()}"/> |     
-                    <h:commandLink value="English" action="#{language.setEnglish()}"/>
-                </h:form>
+                    <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                  <img src="resources/images/es_flag.png"/>
+              </h:commandLink> &nbsp;
+              <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                  <img src="resources/images/en_flag.png"/>
+              </h:commandLink>
+          </h:form>
             </div>
             <hr/>
         </div>
@@ -36,7 +40,7 @@
 
 
                     <li>
-                        <h:outputLabel  value="Contraseña"> <h:message id="errorPwd" for="userPassword" style="color:red"/><br/>
+                        <h:outputLabel  value="#{msg.contraseña}"> <h:message id="errorPwd" for="userPassword" style="color:red"/><br/>
                             <h:inputSecret id="userPassword" label="contraseña" value="#{loginBean.pwd}" maxlength="45" required="true" requiredMessage=" (Introduzca su contraseña)">
                                 <f:ajax event="blur" render="errorPwd" />
                             </h:inputSecret>
@@ -45,7 +49,7 @@
 
 
                     <li>
-                        <h:commandButton  id="loginButton" action="#{loginBean.doLogin()}" value="Iniciar Sesión">
+                        <h:commandButton  id="loginButton" action="#{loginBean.doLogin()}" value="#{msg.login}">
                             <f:ajax execute="@form" render="ajaxError errorDni errorPwd"/> 
                         </h:commandButton>
                     </li>

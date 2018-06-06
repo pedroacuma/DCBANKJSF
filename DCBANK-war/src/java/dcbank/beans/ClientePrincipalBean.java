@@ -126,6 +126,7 @@ public class ClientePrincipalBean implements Serializable {
     }
     public void nombreChangeListener(AjaxBehaviorEvent e){
         if(movimientoBuscado!=null && !movimientoBuscado.equals("") && !movimientoBuscado.equals("-")){
+            
             switch (this.criterioDeBusqueda) {
                 case "B":
                     listaMovimientos = tf.buscardorCuentaDestino(movimientoBuscado,cuenta);
@@ -151,6 +152,7 @@ public class ClientePrincipalBean implements Serializable {
     
     public void dateSelect(){
         this.listaMovimientos = this.tf.buscardorFecha(fechaMov, cuenta);
+        
         System.out.println(fechaMov);
         System.out.println(cuenta);
         System.out.println(listaMovimientos.size());
