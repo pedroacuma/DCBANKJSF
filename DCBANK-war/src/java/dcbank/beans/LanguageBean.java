@@ -9,6 +9,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Locale;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 
 /**
@@ -19,11 +20,16 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class LanguageBean implements Serializable {
     
-    private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    private Locale locale;
     /**
      * Creates a new instance of LanguageBean
      */
     public LanguageBean() {
+    }
+    
+    @PostConstruct
+    public void init(){
+       locale = FacesContext.getCurrentInstance().getApplication().getDefaultLocale();
     }
     
     public Locale getLocale(){
