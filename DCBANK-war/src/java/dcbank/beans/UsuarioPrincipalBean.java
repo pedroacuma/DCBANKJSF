@@ -6,6 +6,7 @@
 package dcbank.beans;
 
 import dcbank.ejb.TransferenciaFacade;
+import dcbank.ejb.UsuarioFacade;
 import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
@@ -29,20 +30,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Named(value = "clientePrincipalBean")
 @SessionScoped
-public class ClientePrincipalBean implements Serializable {
+public class UsuarioPrincipalBean implements Serializable {
     @EJB
     private TransferenciaFacade tf;
+    @EJB
+    private UsuarioFacade uf;
+    
     @Inject
     private LoginBean loginBean;
     
     //-----------------------------------------------------------------------//
     
-    protected Usuario loggerUser;
+    protected Usuario cliente;
     protected Cuenta cuenta;
     protected List<Transferencia> listaMovimientos;
     protected String movimientoBuscado;
     protected Date fechaMov;
     String criterioDeBusqueda;
+    protected String dniBuscado;
+    protected Usuario admin;
 
 
     public Date getFechaMov() {
@@ -54,15 +60,15 @@ public class ClientePrincipalBean implements Serializable {
     }
     
     
-    public ClientePrincipalBean() {
+    public UsuarioPrincipalBean() {
     }
 
-    public Usuario getLoggerUser() {
-        return loggerUser;
+    public Usuario getCliente() {
+        return cliente;
     }
 
-    public void setLoggerUser(Usuario loggerUser) {
-        this.loggerUser = loggerUser;
+    public void setCliente(Usuario cliente) {
+        this.cliente = cliente;
     }
 
     public Cuenta getCuenta() {
@@ -96,17 +102,39 @@ public class ClientePrincipalBean implements Serializable {
     public void setCriterioDeBusqueda(String criterioDeBusqueda) {
         this.criterioDeBusqueda = criterioDeBusqueda;
     }
+
+    public String getDniBuscado() {
+        return dniBuscado;
+    }
+
+    public void setDniBuscado(String dniBuscado) {
+        this.dniBuscado = dniBuscado;
+    }
+
+    public Usuario getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Usuario admin) {
+        this.admin = admin;
+    }
+    
     
     /**
      *
      */
     @PostConstruct
     public void init(){
-        loggerUser = loginBean.getLoggedUser();
-        if(loggerUser != null && loggerUser.getRol()!= 1){
-            cuenta = loggerUser.getCuentaList().get(0);
+        
+        if(loginBean.getLoggedUser() != null && loginBean.getLoggedUser().getRol()!= 1){
+            cliente = loginBean.getLoggedUser();
+            cuenta = cliente.getCuentaList().get(0);
             listaMovimientos = tf.buscarPorCuenta(cuenta);
             System.out.println(this.getCriterioDeBusqueda());
+        }else if (loginBean.getLoggedUser().getRol() == 1){
+            admin = loginBean.getLoggedUser();
+        }else{
+            logout();
         }
         
     }
@@ -157,4 +185,25 @@ public class ClientePrincipalBean implements Serializable {
         System.out.println(cuenta);
         System.out.println(listaMovimientos.size());
     }
+    
+    public String doBuscarUsuario(){
+        cliente = uf.find(dniBuscado);
+        if (cliente != null){
+            cuenta = cliente.getCuentaList().get(0);
+            listaMovimientos = tf.buscarPorCuenta(cuenta);
+            System.out.println(this.getCriterioDeBusqueda());
+        }else{
+            cuenta = null;
+            listaMovimientos = null;
+        }
+        
+        return "";
+    }
+    
+    public String reLoader(){
+        cuenta = cliente.getCuentaList().get(0);
+        listaMovimientos = tf.buscarPorCuenta(cuenta);
+        return "";
+    }
+    
 }

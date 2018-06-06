@@ -30,7 +30,7 @@ import javax.inject.Inject;
 public class RetirarBean implements Serializable {
     
     @Inject
-    private EmpleadoPrincipalBean empleadoPrincipalBean;
+    private UsuarioPrincipalBean usuarioPrincipalBean;
     @EJB
     private UsuarioFacade uf;
     @EJB
@@ -112,7 +112,7 @@ public class RetirarBean implements Serializable {
     @PostConstruct
     public void init(){
         
-        cuenta=empleadoPrincipalBean.getCuentaUsuario();
+        cuenta=usuarioPrincipalBean.getCuenta();
         
     }
     
@@ -130,7 +130,7 @@ public class RetirarBean implements Serializable {
                     t1.setFecha(new  Date());
                     
                     tf.create(t1);
-                    empleadoPrincipalBean.reLoader();
+                    usuarioPrincipalBean.reLoader();
                     return "empleadoPrincipal"; 
              } else {
                  error = "Saldo de cuenta insuficiente.";

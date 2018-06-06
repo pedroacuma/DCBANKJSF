@@ -31,10 +31,10 @@ public class TransferenciaBean implements Serializable{
 private LoginBean loginBean;
 
 @Inject
-private ClientePrincipalBean clientePrincipalBean;
+private UsuarioPrincipalBean clientePrincipalBean;
 
 @Inject
-private EmpleadoPrincipalBean empleadoPrincipalBean;
+private UsuarioPrincipalBean empleadoPrincipalBean;
 
 @EJB
 private CuentaFacade cf;
@@ -114,8 +114,8 @@ protected String ibanDestino,importe,concepto,error;
         loggerUser = loginBean.getLoggedUser(); // Primero obtenemos quien se ha conectado
         
         if(loggerUser.getRol()==1){ // Esta accediendo el Empleado
-            userTransf = empleadoPrincipalBean.getUsuarioBuscado();
-            cuentaOrigen= empleadoPrincipalBean.getCuentaUsuario();
+            userTransf = empleadoPrincipalBean.getCliente();
+            cuentaOrigen= empleadoPrincipalBean.getCuenta();
                     System.out.println("HOLA init() transferencia empleado");
             
         }else{ // Esta accediendo el cliente

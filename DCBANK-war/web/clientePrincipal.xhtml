@@ -36,13 +36,13 @@
                 <!--                    Tabla Informacion Usuario               -->
                 <table  border = "1"> 
                     <tr><th ><h:outputText value="#{msg.nombreYApellido}"/></th></tr>
-                    <tr><td>#{clientePrincipalBean.loggerUser.nombre} #{clientePrincipalBean.loggerUser.apellidos}</td></tr> 
+                    <tr><td>#{clientePrincipalBean.cliente.nombre} #{clientePrincipalBean.cliente.apellidos}</td></tr> 
                     <tr><th>DNI</th></tr>
-                    <tr><td>#{clientePrincipalBean.loggerUser.dni}</td></tr>
+                    <tr><td>#{clientePrincipalBean.cliente.dni}</td></tr>
                     <tr><th><h:outputText value="#{msg.direccion}"/></th></tr>
-                    <tr><td>#{clientePrincipalBean.loggerUser.domicilio}</td></tr>
+                    <tr><td>#{clientePrincipalBean.cliente.domicilio}</td></tr>
                     <tr><th><h:outputText value="#{msg.telefono}"/></th></tr>
-                    <tr><td>#{clientePrincipalBean.loggerUser.telefono}</td></tr>
+                    <tr><td>#{clientePrincipalBean.cliente.telefono}</td></tr>
                 </table>
               </div>
               <div class="col-sm-0">

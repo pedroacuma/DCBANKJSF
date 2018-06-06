@@ -31,10 +31,10 @@ public class IngresarBean implements Serializable{
     private LoginBean loginBean;
     
     @Inject
-    private ClientePrincipalBean clientePrincipalBean;
+    private UsuarioPrincipalBean clientePrincipalBean;
     
     @Inject
-    private EmpleadoPrincipalBean empleadoPrincipalBean;
+    private UsuarioPrincipalBean usuarioPrincipalBean;
     
     @EJB
     private TransferenciaFacade transferenciaFacade;
@@ -61,8 +61,8 @@ public class IngresarBean implements Serializable{
         loggerUser = loginBean.getLoggedUser(); //obtenemos quien se ha conectado
         
         if(loggerUser.getRol() == 1){ //si vale 1 accede un empleado
-            userTransf = empleadoPrincipalBean.getUsuarioBuscado();
-            cuentaOrigen = empleadoPrincipalBean.getCuentaUsuario();
+            userTransf = usuarioPrincipalBean.getCliente();
+            cuentaOrigen = usuarioPrincipalBean.getCuenta();
         }else{ //accede al cliente
             userTransf = loggerUser;
             cuentaOrigen = loggerUser.getCuentaList().get(0);
@@ -91,7 +91,7 @@ public class IngresarBean implements Serializable{
                 clientePrincipalBean.init();
                 enlace = "clientePrincipal";
             }else{
-                empleadoPrincipalBean.reLoader();
+                usuarioPrincipalBean.reLoader();
                 enlace = "empleadoPrincipal";
             }
         }else{ //el importe es negativo
