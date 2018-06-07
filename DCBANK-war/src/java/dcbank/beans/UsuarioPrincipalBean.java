@@ -211,4 +211,26 @@ public class UsuarioPrincipalBean implements Serializable {
         return "";
     }
     
+    
+    public void validateEmpleado(){
+        if(loginBean.getLoggedUser().getRol() != 1){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    public void validateCliente(){
+        if(loginBean.getLoggedUser().getRol() != 0){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
 }

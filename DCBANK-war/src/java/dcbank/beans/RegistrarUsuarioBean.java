@@ -39,7 +39,6 @@ public class RegistrarUsuarioBean {
             } catch (IOException ex) {
                 Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
         }
     }
     

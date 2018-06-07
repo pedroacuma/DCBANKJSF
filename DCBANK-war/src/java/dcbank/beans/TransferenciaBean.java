@@ -31,10 +31,7 @@ public class TransferenciaBean implements Serializable{
 private LoginBean loginBean;
 
 @Inject
-private UsuarioPrincipalBean clientePrincipalBean;
-
-@Inject
-private UsuarioPrincipalBean empleadoPrincipalBean;
+private UsuarioPrincipalBean usuarioPrincipalBean;
 
 @EJB
 private CuentaFacade cf;
@@ -114,8 +111,8 @@ protected String ibanDestino,importe,concepto,error;
         loggerUser = loginBean.getLoggedUser(); // Primero obtenemos quien se ha conectado
         
         if(loggerUser.getRol()==1){ // Esta accediendo el Empleado
-            userTransf = empleadoPrincipalBean.getCliente();
-            cuentaOrigen= empleadoPrincipalBean.getCuenta();
+            userTransf = usuarioPrincipalBean.getCliente();
+            cuentaOrigen= usuarioPrincipalBean.getCuenta();
             
         }else{ // Esta accediendo el cliente
             userTransf = loggerUser;
@@ -158,12 +155,13 @@ protected String ibanDestino,importe,concepto,error;
                     t2.setFecha(new  Date());
                     
                     tf.create(t2);
+                    
                     if(loggerUser.getRol()!= 1){
-                        clientePrincipalBean.init();
-                       return "clientePrincipal";
+                        usuarioPrincipalBean.init();
+                       return "clientePrincipal?faces-redirect=true";
                     }else{
-                        empleadoPrincipalBean.reLoader();
-                        return "empleadoPrincipal";
+                        usuarioPrincipalBean.reLoader();
+                        return "empleadoPrincipal?faces-redirect=true";
                     }
                        
                 } else {

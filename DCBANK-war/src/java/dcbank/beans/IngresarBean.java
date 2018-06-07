@@ -10,13 +10,17 @@ import dcbank.ejb.TransferenciaFacade;
 import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 /**
@@ -29,9 +33,6 @@ public class IngresarBean implements Serializable{
     
     @Inject
     private LoginBean loginBean;
-    
-    @Inject
-    private UsuarioPrincipalBean clientePrincipalBean;
     
     @Inject
     private UsuarioPrincipalBean usuarioPrincipalBean;
@@ -63,10 +64,14 @@ public class IngresarBean implements Serializable{
         if(loggerUser.getRol() == 1){ //si vale 1 accede un empleado
             userTransf = usuarioPrincipalBean.getCliente();
             cuentaOrigen = usuarioPrincipalBean.getCuenta();
-        }else{ //accede al cliente
-            userTransf = loggerUser;
-            cuentaOrigen = loggerUser.getCuentaList().get(0);
+        }else if(loggerUser.getRol()!= 1) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
         
     }
     
@@ -88,11 +93,11 @@ public class IngresarBean implements Serializable{
             transferenciaFacade.create(t);
             
             if(loggerUser.getRol() != 1){
-                clientePrincipalBean.init();
-                enlace = "clientePrincipal";
+                usuarioPrincipalBean.init();
+                enlace = "clientePrincipal?faces-redirect=true";
             }else{
                 usuarioPrincipalBean.reLoader();
-                enlace = "empleadoPrincipal";
+                enlace = "empleadoPrincipal?faces-redirect=true";
             }
         }else{ //el importe es negativo
             error = "Importe negativo";

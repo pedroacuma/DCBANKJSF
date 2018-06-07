@@ -11,14 +11,18 @@ import dcbank.ejb.UsuarioFacade;
 import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 /**
@@ -31,6 +35,10 @@ public class RetirarBean implements Serializable {
     
     @Inject
     private UsuarioPrincipalBean usuarioPrincipalBean;
+    
+    @Inject
+    private LoginBean login;
+    
     @EJB
     private UsuarioFacade uf;
     @EJB
@@ -112,8 +120,15 @@ public class RetirarBean implements Serializable {
     @PostConstruct
     public void init(){
         
+        if(login.getLoggedUser().getRol() != 1){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         cuenta=usuarioPrincipalBean.getCuenta();
-        
+
     }
     
     public String operacion(){
@@ -131,7 +146,7 @@ public class RetirarBean implements Serializable {
                     
                     tf.create(t1);
                     usuarioPrincipalBean.reLoader();
-                    return "empleadoPrincipal"; 
+                    return "empleadoPrincipal?faces-redirect=true"; 
              } else {
                  error = "Saldo de cuenta insuficiente.";
                  enlace="";

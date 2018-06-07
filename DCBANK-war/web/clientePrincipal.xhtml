@@ -11,6 +11,7 @@
         <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"/>
     </h:head>
+        #{clientePrincipalBean.validateCliente()}
     <h:body style="background-color: #2ECC71">
         
             <br></br>
@@ -52,6 +53,12 @@
                     </tr>
                     <tr>
                         <td align="center">#{clientePrincipalBean.cuenta.iban}</td>
+                    </tr>
+                    <tr>
+                        <th><h:outputText value="#{msg.saldo}"/></th>
+                    </tr>
+                    <tr>
+                        <td align="center">#{clientePrincipalBean.cuenta.saldo} </td>
                     </tr>
                 </table>
               </div>

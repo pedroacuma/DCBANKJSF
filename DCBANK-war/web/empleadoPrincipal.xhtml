@@ -5,14 +5,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <f:view locale="#{languageBean.locale}">
-
+        
     <h:head>
         <title><h:outputText value="#{msg.empleadoPrincipal}"/></title>
         <h:outputStylesheet  library="css" name="usuarioPrincipal.css"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"/>
     </h:head>
     <h:body style="background-color: #2ECC71">
-        
+            #{clientePrincipalBean.validateEmpleado()}
             <br></br>
             <h1 align="center">#{msg['zonaEmpleado']}</h1>
             <div align="right">
@@ -55,7 +55,13 @@
                         <th><h:outputText value="#{msg.cuentaUsuario}"/></th>
                     </tr>
                     <tr>
-                        <td align="center">#{clientePrincipalBean.cuenta.iban}</td>
+                        <td align="center">#{clientePrincipalBean.cuenta.iban} </td>
+                    </tr>
+                    <tr>
+                        <th><h:outputText value="#{msg.saldo}"/></th>
+                    </tr>
+                    <tr>
+                        <td align="center">#{clientePrincipalBean.cuenta.saldo} </td>
                     </tr>
                 </table>
               </div>
