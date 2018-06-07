@@ -8,13 +8,15 @@
         <h:outputStylesheet  library="css" name="login.css"/>
     </h:head>
     <h:body>
+        
+        <!--CABECERA Y SELECTOR IDIOMAS -->
         <div>
             <h1 align="center">#{msg.accesoPrincipal}</h1>
             <div align="right">
                 <h:form>
                     <h:commandLink action="#{languageBean.changeLanguage('es')}">
                   <img src="resources/images/es_flag.png"/>
-              </h:commandLink> &nbsp;
+              </h:commandLink> 
               <h:commandLink action="#{languageBean.changeLanguage('en')}">
                   <img src="resources/images/en_flag.png"/>
               </h:commandLink>
@@ -23,15 +25,19 @@
             <hr/>
         </div>
 
+        
+        <!-- FORMULARIO LOGIN -->
+        
         <div  class="loginform cf">
             <h:form rendered="#{loginBean.loggedUser == null}">
 
-                <h:messages style="color:red"/>
 
                 <ul>
                     <li>
                         <h:outputLabel  value="DNI"> <h:message id="errorDni" for="userDni" style="color:red"/><br/>
-                            <h:inputText id="userDni" label="dni" required="true" value="#{loginBean.dni}" maxlength="9"  requiredMessage=" (Introduzca DNI)">
+                            <h:inputText id="userDni" label="dni"  value="#{loginBean.dni}" maxlength="9"
+                                         required="true" requiredMessage=" *#{msg.errorRequerido}"
+                                         validator="#{loginBean.validateDNI}" validatorMessage=" #{msg.errorDniNoRegistrado}">
                                 <f:ajax event="blur" render="errorDni" />
                             </h:inputText>
                         </h:outputLabel>
@@ -41,7 +47,9 @@
 
                     <li>
                         <h:outputLabel  value="#{msg.contraseña}"> <h:message id="errorPwd" for="userPassword" style="color:red"/><br/>
-                            <h:inputSecret id="userPassword" label="contraseña" value="#{loginBean.pwd}" maxlength="45" required="true" requiredMessage=" (Introduzca su contraseña)">
+                            <h:inputSecret id="userPassword" label="contraseña" value="#{loginBean.pwd}" maxlength="45" 
+                                           required="true" requiredMessage=" *#{msg.errorRequerido}"
+                                           validator="#{loginBean.validatePwd}" validatorMessage=" #{msg.errorPwdIncorrecta}">
                                 <f:ajax event="blur" render="errorPwd" />
                             </h:inputSecret>
                         </h:outputLabel>
@@ -49,22 +57,18 @@
 
 
                     <li>
-                        <h:commandButton  id="loginButton" action="#{loginBean.doLogin()}" value="#{msg.login}">
-                            <f:ajax execute="@form" render="ajaxError errorDni errorPwd"/> 
+                        <h:commandButton  id="loginButton"  action="#{loginBean.doLogin()}" value="#{msg.login}">
+                            <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                     </li>
-
-                    <li>
-                        <h:outputText value="#{loginBean.error}" id="ajaxError"/>
-                        <h:message id="errorLogin" for="loginButton" />
-                    </li> 
 
                 </ul>
             </h:form>
 
-            <h:outputText value="Ya está logueado, acceda a: " rendered="#{loginBean.loggedUser!=null}"/>
-            <h:link outcome="empleadoPrincipal" rendered="#{loginBean.loggedUser.rol == 1}" value="Zona Empleado"/>
-            <h:link outcome="clientePrincipal" rendered="#{loginBean.loggedUser.rol == 0}" value="Zona Usuario"/>
+            <!-- ALERTAS YA LOGUEADO -->
+            <h:outputText value="#{msg.alertaYaLogueado} " rendered="#{loginBean.loggedUser!=null}"/>
+            <h:link outcome="empleadoPrincipal" rendered="#{loginBean.loggedUser.rol == 1}" value="#{msg.zonaEmpleado}"/>
+            <h:link outcome="clientePrincipal" rendered="#{loginBean.loggedUser.rol == 0}" value="#{msg.zonaCliente}"/>
         </div>
         <br />
 

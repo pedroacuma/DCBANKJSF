@@ -116,12 +116,10 @@ protected String ibanDestino,importe,concepto,error;
         if(loggerUser.getRol()==1){ // Esta accediendo el Empleado
             userTransf = empleadoPrincipalBean.getCliente();
             cuentaOrigen= empleadoPrincipalBean.getCuenta();
-                    System.out.println("HOLA init() transferencia empleado");
             
         }else{ // Esta accediendo el cliente
             userTransf = loggerUser;
             cuentaOrigen=loggerUser.getCuentaList().get(0);
-            System.out.println("HOLA init() transferencia para cliente");
         }
         
     }

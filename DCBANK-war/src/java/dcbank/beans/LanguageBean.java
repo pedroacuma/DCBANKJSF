@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 
 /**
  *
- * @author ofviak
+ * @author Pedro Avila
  */
 @Named(value = "languageBean")
 @SessionScoped

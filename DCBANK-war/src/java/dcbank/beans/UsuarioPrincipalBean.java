@@ -10,11 +10,12 @@ import dcbank.ejb.UsuarioFacade;
 import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
+import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -22,11 +23,10 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author Sr. Cuevas
+ * @author Sr. Cuevas, Pedro Avila, Jairo
  */
 @Named(value = "clientePrincipalBean")
 @SessionScoped
@@ -134,10 +134,15 @@ public class UsuarioPrincipalBean implements Serializable {
         }else if (loginBean.getLoggedUser().getRol() == 1){
             admin = loginBean.getLoggedUser();
         }else{
-            logout();
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
+    
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         loginBean.setLoggedUser(null);
