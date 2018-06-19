@@ -11,33 +11,97 @@
         <h:outputStylesheet  library="css" name="login.css"/>
     </h:head>
     <h:body>
+        
+                <!--CABECERA Y SELECTOR IDIOMAS -->
         <div>
-            <h1 align="center"> Registrar Usuario </h1>
-            <h:form>
-              <h:commandLink action="#{languageBean.changeLanguage('es')}">
+            <h1 align="center">#{msg.accesoPrincipal}</h1>
+            <div align="right">
+                <h:form>
+                    <h:commandLink action="#{languageBean.changeLanguage('es')}">
                   <img src="resources/images/es_flag.png"/>
-              </h:commandLink>
+              </h:commandLink> 
               <h:commandLink action="#{languageBean.changeLanguage('en')}">
                   <img src="resources/images/en_flag.png"/>
               </h:commandLink>
           </h:form>
+            </div>
             <hr/>
         </div>
         
+        
+        <!-- FORMULARIO REGISTRO -->
         <div  class="loginform cf">
             <h:form>
             <ul>
                <li>
-                   <h:outputLabel value="DNI"> <h:message id="dniInvalido" for="userDni" style="color:red" />
-                   <h:inputText id="userDni" label="dni" required="true" value="#{registrarUsuarioBean.usuario.dni}" maxlength="9" requiredMessage="Se requiere el DNI">
-                       <f:validator validatorId="dniValidator"/>
+                   <h:outputLabel value="DNI"> <h:message id="dniInvalido" for="userDni" style="color:red" /> <br/>
+                   <h:inputText id="userDni" required="true" value="#{registrarUsuarioBean.usuario.dni}" maxlength="9" 
+                                requiredMessage=" *#{msg.dniRequerido}" validatorMessage=" #{msg.dniInvalido}"
+                                validator="#{registrarUsuarioBean.validateDNI}">         
                        <f:ajax  event="blur" render="dniInvalido" />
                    </h:inputText>
                    </h:outputLabel>
                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.nombreUsuario}"> <h:message id="nombreRequerido" for="userNombre" style="color:red" /> <br/>
+                        <h:inputText id="userNombre" required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="50"
+                                     value="#{registrarUsuarioBean.usuario.nombre}">
+                            <f:ajax  event="blur" render="nombreRequerido" />
+                        </h:inputText>
+                    </h:outputLabel>
+                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.apellidos}"> <h:message id="apellidosRequerido" for="userApell" style="color:red" /> <br/>
+                        <h:inputText id="userApell"  required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="50" 
+                                     value="#{registrarUsuarioBean.usuario.apellidos}">
+                            <f:ajax  event="blur" render="apellidosRequerido" />
+                        </h:inputText>
+                    </h:outputLabel>
+                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.telefono}"> <h:message id="errorTlf" for="userTlf" style="color:red" /> <br/>
+                        <h:inputText id="userTlf" required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="45"
+                                     validatorMessage=" #{msg.errorTlf}" value="#{registrarUsuarioBean.usuario.telefono}">
+                            <f:validator validatorId="digitValidator" for="userTlf"/>
+                            <f:ajax  event="blur" render="errorTlf" />
+                        </h:inputText>
+                    </h:outputLabel>
+                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.direccion}"> <h:message id="errorDireccion" for="userDireccion" style="color:red" /> <br/>
+                        <h:inputText id="userDireccion"  required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="45" 
+                                     value="#{registrarUsuarioBean.usuario.domicilio}">
+                            <f:ajax  event="blur" render="errorDireccion" />
+                        </h:inputText>
+                    </h:outputLabel>
+                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.contraseña}"> <h:message id="pwdRequerida" for="userPwd" style="color:red" /> <br/>
+                        <h:inputSecret id="userPwd" binding="#{pwd}" required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="50"
+                                       value="#{registrarUsuarioBean.usuario.password}">
+                            <f:ajax event="blur" render="pwRequerida pwdCheckError" execute="userPwd pwdCheck"/>
+                        </h:inputSecret>
+                    </h:outputLabel>
+                </li>
+                
+                <li>
+                    <h:outputLabel value="#{msg.repetirContraseña}"> <h:message id="pwdCheckError" for="pwdCheck" style="color:red" /> <br/>
+                        <h:inputSecret id="pwdCheck" required="true" requiredMessage=" *#{msg.errorRequerido}" maxlength="50"
+                                       validatorMessage="#{msg.coincidirPwdError}">
+                            <f:validator validatorId="pwd2Validator" />
+                            <f:attribute name="pwd" value="#{pwd}" />
+                            <f:ajax event="keyup" render="pwdCheckError" execute="userPwd pwdCheck"/>
+                        </h:inputSecret>
+                    </h:outputLabel>
+                </li>
 
                <li>
-                   <h:commandButton  action="#{registrarUsuarioBean.doRegistrar()}" value="Iniciar Sesión">
+                   <h:commandButton  action="#{registrarUsuarioBean.doRegistrar()}" value="#{msg.registrarUsuario}">
                    </h:commandButton>
                </li>
 

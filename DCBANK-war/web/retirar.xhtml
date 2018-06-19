@@ -7,7 +7,7 @@
 
     
     <h:head>
-        <title>Realizar retirada</title>
+        <title>#{msg.realizarRetirada}</title>
         <h:outputStylesheet  library="css" name="login.css"/>
     </h:head>
     <h:body>
@@ -27,7 +27,7 @@
         <h:form>
             <lu>
                 <li>
-                    <h:outputLabel value="Nombre Usuario" />
+                    <h:outputLabel value="#{msg.nombreUsuario}" />
                     <h:inputText readonly="true" value="#{clientePrincipalBean.cliente.nombre} #{clientePrincipalBean.cliente.apellidos}"/>
                 </li>
                 <li>
@@ -35,21 +35,28 @@
                     <h:inputText readonly="true" value="#{clientePrincipalBean.cliente.dni}" maxlength="9"/>
                 </li>
                 <li>
-                    <h:outputLabel value="Cuenta Usuario" />
+                    <h:outputLabel value="#{msg.cuentaUsuario}" />
                     <h:inputText readonly="true" value="#{retirarBean.cuenta.iban}" maxlength="24"/>
                 </li>
                 <li>
-                    <h:outputLabel value="Importe a Retirar" /> 
-                    <h:inputText value="#{retirarBean.importe}"/>
+                    <h:outputLabel value="#{msg.cantidad}" /> <h:message id="errorCant" for="cant" style="color:red"/>
+                    <h:inputText id="cant" value="#{retirarBean.importe}" required="true" requiredMessage="#{msg.errorRequerido}"
+                                 validatorMessage="#{msg.errorCantidad}">
+                        <f:validator validatorId="digitValidator" />
+                        <f:validateLongRange minimum="1" maximum="#{retirarBean.cuenta.saldo}" />
+                        <f:ajax render="errorCant" event="blur"/>
+                    </h:inputText>
                 </li>
                 <li>
-                    <h:outputLabel value="Concepto" />
+                    <h:outputLabel value="#{msg.concepto}" />
                     <h:inputText value="#{retirarBean.concepto}"/>
                 </li>
                 <li>
-                    <h:commandButton value="Enviar" action="#{retirarBean.operacion()}"/>
+                    <h:commandButton value="#{msg.enviar}" action="#{retirarBean.operacion()}">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
                 </li>
-                <h:outputLabel value="#{retirarBean.error}"/>
+                
             </lu>
             
             

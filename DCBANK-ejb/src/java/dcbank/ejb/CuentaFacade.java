@@ -8,6 +8,7 @@ package dcbank.ejb;
 import dcbank.entity.Cuenta;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -33,7 +34,13 @@ public class CuentaFacade extends AbstractFacade<Cuenta> {
     public Cuenta findByIBAN(String iban) {
         Query q = this.em.createNamedQuery("Cuenta.findByIban");
         q.setParameter("iban", iban);
-        Cuenta c = (Cuenta) q.getSingleResult();
+        Cuenta c;
+        try{
+            c = (Cuenta) q.getSingleResult();
+        }catch(NoResultException e){
+            c = null;
+        }
+ 
         return c;
     }     
     

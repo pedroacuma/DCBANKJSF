@@ -18,18 +18,21 @@
             <div align="right">
        
                 <h:form>
-                | <h:link outcome="registrarMovimiento" value="#{msg.registrarMovimiento}"/> |
-                <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/> |
-                <h:commandLink action="#{languageBean.changeLanguage('es')}">
-                <img src="resources/images/es_flag.png"/>
-                </h:commandLink>
-                <h:commandLink action="#{languageBean.changeLanguage('en')}">
-                  <img src="resources/images/en_flag.png"/>
-                </h:commandLink>
+                    <h:link outcome="registrarMovimiento" value="#{msg.registrarMovimiento}" rendered="#{clientePrincipalBean.cliente!=null}"/> | 
+                    <h:link outcome="registrarUsuario" value="#{msg.registrarUsuario}"/> |
+                    <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/> |
+                    <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                    <img src="resources/images/es_flag.png"/>
+                    </h:commandLink>
+                    <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                    <img src="resources/images/en_flag.png"/>
+                    </h:commandLink>
                 </h:form>
             </div>
         
         <hr/>
+        
+        
         <h:form>
             <h:inputText value="#{clientePrincipalBean.dniBuscado}"/>
             <h:commandButton value="#{msg.buscarCliente}" action="#{clientePrincipalBean.doBuscarUsuario()}"/>
@@ -80,8 +83,8 @@
                     </h:panelGrid>
                     <h:selectOneMenu  value="#{clientePrincipalBean.criterioDeBusqueda}"> 
                     <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
-                    <f:selectItem itemValue="A" itemLabel="Fecha" />
-                    <f:selectItem itemValue="C" itemLabel="Cantidad" />
+                    <f:selectItem itemValue="A" itemLabel="#{msg.fecha}" />
+                    <f:selectItem itemValue="C" itemLabel="#{msg.cantidad}" />
                     <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
                     <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
                     <f:ajax event="click" render="panelParametro" />

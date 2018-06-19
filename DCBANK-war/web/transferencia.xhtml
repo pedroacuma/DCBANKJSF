@@ -38,21 +38,32 @@
                     </li>
                     <li>
                         <h:outputLabel value="#{msg.cuentaDestino}"> <h:message id="msg" for="ibanDestino" style="color:red"/>
-                        <h:inputText id="ibanDestino" value="#{transferenciaBean.ibanDestino}" required="true" requiredMessage=" (Campo requerido)" maxlength="24">
+                            <h:inputText id="ibanDestino" value="#{transferenciaBean.ibanDestino}" required="true" 
+                                         requiredMessage="#{msg.errorRequerido}" maxlength="24" 
+                                         validator="#{transferenciaBean.validateIBAN}" validatorMessage=" #{msg.errorCuentaIBAN}">
                             <f:ajax event="blur" render="msg"/>
                         </h:inputText>
-                        </h:outputLabel>
+                        </h:outputLabel> 
                     </li>
+                    
                     <li>
-                        <h:outputLabel value="#{msg.importeATransferir}"/>
-                        <h:inputText value="#{transferenciaBean.importe}"/>
+                    <h:outputLabel value="#{msg.cantidad}" /> <h:message id="errorCant" for="cant" style="color:red"/>
+                    <h:inputText id="cant" value="#{transferenciaBean.importe}" required="true" requiredMessage="#{msg.errorRequerido}"
+                                 validatorMessage="#{msg.errorCantidad}">
+                        <f:validator validatorId="digitValidator" />
+                        <f:validateLongRange minimum="1" maximum="#{transferenciaBean.cuenta.saldo}" />
+                        <f:ajax render="errorCant" event="keyup"/>
+                    </h:inputText>
                     </li>
+                    
                     <li>
                         <h:outputLabel value="#{msg.conceptoTransferencia}"/>
                         <h:inputText value="#{transferenciaBean.concepto}"/>
                     </li>
                     <li>
-                        <h:commandButton value="#{msg.enviar}" action="#{transferenciaBean.operacion()}"/>
+                        <h:commandButton value="#{msg.enviar}" action="#{transferenciaBean.operacion()}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
                     </li>
                 </lu>
                 <h:outputLabel value="#{transferenciaBean.error}"/>

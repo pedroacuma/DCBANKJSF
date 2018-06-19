@@ -77,31 +77,27 @@ public class IngresarBean implements Serializable{
     
     public String Operacion(){
         int importes = Integer.parseInt(this.importe);
-        if(importes > 0){ //comprobamos que hemos introducido saldo
-            cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() + importes); //añadimos el importe
-            cuentaFacade.edit(cuentaOrigen);
+        
+        cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() + importes); //añadimos el importe
+        cuentaFacade.edit(cuentaOrigen);
             
-            //creamos una Transferencia
-            Transferencia t = new Transferencia();
-            t.setBeneficiario(cuentaOrigen.getPropietario().getNombre() + " " + cuentaOrigen.getPropietario().getApellidos());
-            t.setCantidad(importes);
-            t.setConcepto("Ingreso- " + concepto);
-            t.setCuenta(cuentaOrigen);
-            t.setCuentaDestino(cuentaOrigen);
-            t.setFecha(new Date());
-            
-            transferenciaFacade.create(t);
-            
-            if(loggerUser.getRol() != 1){
-                usuarioPrincipalBean.init();
-                enlace = "clientePrincipal?faces-redirect=true";
-            }else{
-                usuarioPrincipalBean.reLoader();
-                enlace = "empleadoPrincipal?faces-redirect=true";
-            }
-        }else{ //el importe es negativo
-            error = "Importe negativo";
-            enlace = "";
+        //creamos una Transferencia
+        Transferencia t = new Transferencia();
+        t.setBeneficiario(cuentaOrigen.getPropietario().getNombre() + " " + cuentaOrigen.getPropietario().getApellidos());
+        t.setCantidad(importes);
+        t.setConcepto("Ingreso- " + concepto);
+        t.setCuenta(cuentaOrigen);
+        t.setCuentaDestino(cuentaOrigen);
+        t.setFecha(new Date());
+           
+        transferenciaFacade.create(t);
+          
+        if(loggerUser.getRol() != 1){
+            usuarioPrincipalBean.init();
+            enlace = "clientePrincipal?faces-redirect=true";
+        }else{
+            usuarioPrincipalBean.reLoader();
+            enlace = "empleadoPrincipal?faces-redirect=true";
         }
         return enlace;
     }

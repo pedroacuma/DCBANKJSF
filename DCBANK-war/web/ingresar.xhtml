@@ -47,18 +47,26 @@ and open the template in the editor.
                         <h:inputText readonly="true" value="#{ingresarBean.cuentaOrigen.iban}"/>
                     </li>
                     <li>
-                        <h:outputText value="#{msg.importeATransferir}" />
-                        <h:inputText value="#{ingresarBean.importe}" />
+                        <h:outputText value="#{msg.importeATransferir}" /> <h:message id="errorCant" for="cant" style="color:red" />
+
+                        <h:inputText id="cant" value="#{ingresarBean.importe}" 
+                                     required="true" requiredMessage="#{msg.errorRequerido}"
+                                     validatorMessage="#{msg.errorCantidad}">
+                            <f:validator validatorId="digitValidator" />
+                            <f:validateLongRange minimum="1" />
+                            <f:ajax event="blur" render="errorCant"/>
+                        </h:inputText>
                     </li>
                     <li>
                         <h:outputText value="#{msg.conceptoInresar}"/>
                         <h:inputText value="#{ingresarBean.concepto}"/>
                     </li>
                     <li>
-                        <h:commandButton value="#{msg.ingresar}" action="#{ingresarBean.Operacion()}"/>
+                        <h:commandButton value="#{msg.ingresar}" action="#{ingresarBean.Operacion()}">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
                     </li>
                 </lu>
-                <h:outputLabel value="#{ingresarBean.error}"/>
             </h:form>
         </div>
     </h:body>

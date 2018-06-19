@@ -11,11 +11,14 @@ import dcbank.entity.Cuenta;
 import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.inject.Inject;
 
@@ -122,60 +125,54 @@ protected String ibanDestino,importe,concepto,error;
     }
     
     public String operacion(){
-        cuentaDestino= cf.findByIBAN(ibanDestino);
-        if(cuentaDestino != null){
-            if(Integer.parseInt(importe)>0){
-                if(cuentaOrigen.getSaldo()>= Integer.parseInt(importe)){
-                    // quitamos de una cuenta
-                    cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - Integer.parseInt(importe));
-                    cf.edit(cuentaOrigen);
+        Integer impt = Integer.parseInt(importe);
+        cuentaDestino = cf.findByIBAN(ibanDestino);
+        // quitamos de una cuenta
+        cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - impt);
+        cf.edit(cuentaOrigen);
                     
-                    //ponemos en otra cuenta
-                    cuentaDestino.setSaldo(cuentaDestino.getSaldo() + Integer.parseInt(importe));
-                    cf.edit(cuentaDestino);
+        //ponemos en otra cuenta
+        cuentaDestino.setSaldo(cuentaDestino.getSaldo() + impt);
+        cf.edit(cuentaDestino);
+                   
+        //creamos las transferencias
+                   
+        Transferencia t1 = new Transferencia();
+        t1.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
+        t1.setCantidad(impt * (-1));
+        t1.setConcepto("Transferencia-" + concepto);
+        t1.setCuenta(cuentaOrigen);
+        t1.setCuentaDestino(cuentaDestino);
+        t1.setFecha(new  Date());
                     
-                    //creamos las transferencias
+        tf.create(t1);
                     
-                    Transferencia t1 = new Transferencia();
-                    t1.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
-                    t1.setCantidad(Integer.parseInt(importe) * (-1));
-                    t1.setConcepto("Transferencia-" + concepto);
-                    t1.setCuenta(cuentaOrigen);
-                    t1.setCuentaDestino(cuentaDestino);
-                    t1.setFecha(new  Date());
+        Transferencia t2 = new Transferencia();
+        t2.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
+        t2.setConcepto("Transferencia-" + concepto);
+        t2.setCantidad(impt);
+        t2.setCuenta(cuentaDestino);
+        t2.setCuentaDestino(cuentaOrigen);
+        t2.setFecha(new  Date());
                     
-                    tf.create(t1);
+        tf.create(t2);
                     
-                    Transferencia t2 = new Transferencia();
-                    t2.setBeneficiario(cuentaDestino.getPropietario().getNombre() + " " + cuentaDestino.getPropietario().getApellidos());
-                    t2.setConcepto("Transferencia-" + concepto);
-                    t2.setCantidad(Integer.parseInt(importe));
-                    t2.setCuenta(cuentaDestino);
-                    t2.setCuentaDestino(cuentaOrigen);
-                    t2.setFecha(new  Date());
-                    
-                    tf.create(t2);
-                    
-                    if(loggerUser.getRol()!= 1){
-                        usuarioPrincipalBean.init();
-                       return "clientePrincipal?faces-redirect=true";
-                    }else{
-                        usuarioPrincipalBean.reLoader();
-                        return "empleadoPrincipal?faces-redirect=true";
-                    }
-                       
-                } else {
-                    error = "Saldo de cuenta origen insuficiente";
-                    enlace="";
-                }
-            }else{
-                    error = "Importe negativo";
-                    enlace="";
-            }   
+        if(loggerUser.getRol()!= 1){
+            usuarioPrincipalBean.init();
+            return "clientePrincipal?faces-redirect=true";
         }else{
-            error = "La cuenta destino no existe";
-            enlace="";
+            usuarioPrincipalBean.reLoader();
+            return "empleadoPrincipal?faces-redirect=true";
         }
-        return enlace;
     }  
+    
+    
+    public void validateIBAN(FacesContext context, UIComponent component, Object value) throws ValidatorException{
+        String iban = (String) value;
+        if(this.cf.findByIBAN(iban)==null || iban.equals(cuentaOrigen.getIban()) ){
+            FacesMessage msg = new FacesMessage();
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        }
+    }
 }

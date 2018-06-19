@@ -132,31 +132,23 @@ public class RetirarBean implements Serializable {
     }
     
     public String operacion(){
-        if(Integer.parseInt(importe)>0){
-             if(cuenta.getSaldo()>= Integer.parseInt(importe)){
-                 cuenta.setSaldo(cuenta.getSaldo() - Integer.parseInt(importe));
-                 cf.edit(cuenta);
+        Integer impt = Integer.parseInt(importe);
+        
+             
+        cuenta.setSaldo(cuenta.getSaldo() - impt);
+        cf.edit(cuenta);
                  
-                    Transferencia t1 = new Transferencia();
-                    t1.setBeneficiario(cuenta.getPropietario().getNombre() + " " + cuenta.getPropietario().getApellidos());
-                    t1.setCantidad(Integer.parseInt(importe) * (-1));
-                    t1.setConcepto("Retirada-" + concepto);
-                    t1.setCuenta(cuenta);
-                    t1.setFecha(new  Date());
-                    
-                    tf.create(t1);
-                    usuarioPrincipalBean.reLoader();
-                    return "empleadoPrincipal?faces-redirect=true"; 
-             } else {
-                 error = "Saldo de cuenta insuficiente.";
-                 enlace="";
-             }
-            
-        } else {
-            error = "Importe cero o negativo.";
-            enlace="";
-        }
-        return enlace;
+        Transferencia t1 = new Transferencia();
+        t1.setBeneficiario(cuenta.getPropietario().getNombre() + " " + cuenta.getPropietario().getApellidos());
+        t1.setCantidad(-impt);
+        t1.setConcepto("Retirada-" + concepto);
+        t1.setCuenta(cuenta);
+        t1.setFecha(new  Date());
+                   
+        tf.create(t1);
+        usuarioPrincipalBean.reLoader();
+        return "empleadoPrincipal?faces-redirect=true"; 
+
     }
 }
 
