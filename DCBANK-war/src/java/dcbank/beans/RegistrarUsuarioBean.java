@@ -10,7 +10,10 @@ import dcbank.ejb.UsuarioFacade;
 import dcbank.entity.Cuenta;
 import dcbank.entity.Usuario;
 import dcbank.utils.IbanGenerator;
+import dcbank.utils.Md5Hasher;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,8 +43,6 @@ public class RegistrarUsuarioBean {
 
     @EJB
     private UsuarioFacade usuarioFacade;
-    
-    
     
     @Inject
     private LoginBean loginBean;
@@ -126,6 +127,11 @@ public class RegistrarUsuarioBean {
     
     public String doRegistrar(){
         usuario.setRol((short) 0);
+        try {
+            String pwdHash = Md5Hasher.MD5(usuario.getPassword());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.usuarioFacade.create(usuario);
         
         Cuenta c = new Cuenta();

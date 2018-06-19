@@ -7,9 +7,14 @@ package dcbank.beans;
 
 import dcbank.ejb.UsuarioFacade;
 import dcbank.entity.Usuario;
+import dcbank.utils.Md5Hasher;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -92,13 +97,23 @@ public class LoginBean implements Serializable{
      */
     public void validatePwd(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if(validDNI){
-            Usuario aux = this.usuarioFacade.find(dni);
         
-            if(!value.equals(aux.getPassword())){
+            Usuario aux = this.usuarioFacade.find(dni);
+            String pwd = (String) value;
+            String pwdHash = "";
+            try {
+                pwdHash = Md5Hasher.MD5(pwd);
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(pwdHash);
+            
+            if(!pwdHash.equals(aux.getPassword())){
                 FacesMessage msg = new FacesMessage();
                 msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(msg);
             }
+            
         }
     }
     
