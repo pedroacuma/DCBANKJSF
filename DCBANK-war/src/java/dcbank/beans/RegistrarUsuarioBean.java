@@ -129,6 +129,7 @@ public class RegistrarUsuarioBean {
         usuario.setRol((short) 0);
         try {
             String pwdHash = Md5Hasher.MD5(usuario.getPassword());
+            usuario.setPassword(pwdHash);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             Logger.getLogger(RegistrarUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
