@@ -66,6 +66,7 @@
             </h:form>
 
             <!-- ALERTAS YA LOGUEADO -->
+            
             <h:outputText value="#{msg.alertaYaLogueado} " rendered="#{loginBean.loggedUser!=null}"/>
             <h:link outcome="empleadoPrincipal" rendered="#{loginBean.loggedUser.rol == 1}" value="#{msg.zonaEmpleado}"/>
             <h:link outcome="clientePrincipal" rendered="#{loginBean.loggedUser.rol == 0}" value="#{msg.zonaCliente}"/>

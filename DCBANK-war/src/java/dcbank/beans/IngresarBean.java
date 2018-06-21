@@ -12,7 +12,7 @@ import dcbank.entity.Transferencia;
 import dcbank.entity.Usuario;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +22,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -88,8 +90,10 @@ public class IngresarBean implements Serializable{
         t.setConcepto("Ingreso- " + concepto);
         t.setCuenta(cuentaOrigen);
         t.setCuentaDestino(cuentaOrigen);
+        
         t.setFecha(new Date());
-           
+        
+        
         transferenciaFacade.create(t);
           
         if(loggerUser.getRol() != 1){

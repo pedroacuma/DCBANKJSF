@@ -13,30 +13,44 @@
     </h:head>
     <h:body style="background-color: #2ECC71">
             #{clientePrincipalBean.validateEmpleado()}
-            <br></br>
-            <h1 align="center">#{msg['zonaEmpleado']}</h1>
-            <div align="right">
-       
-                <h:form>
-                    <h:link outcome="registrarMovimiento" value="#{msg.registrarMovimiento}" rendered="#{clientePrincipalBean.cliente!=null}"/> | 
-                    <h:link outcome="registrarUsuario" value="#{msg.registrarUsuario}"/> |
-                    <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/> |
-                    <h:commandLink action="#{languageBean.changeLanguage('es')}">
+           <br/>
+           
+           <h1 align="center">#{msg['zonaEmpleado']}</h1>
+           
+           <!-- BUSCADOR CLIENTES -->
+          
+           <div style="display:inline-block">
+               <h:form styleClass="form-inline" >
+                <div class="form-group">
+                    <h2><span class="badge badge-pill badge-info"> #{msg.buscarCliente}. #{msg.dni} : 
+                    <!-- <h:outputLabel for="dniInput"></h:outputLabel> -->
+                    <h:inputText  id="dniInput" styleClass="form-control" value="#{clientePrincipalBean.dniBuscado}" size="9" maxlength="9"/>
+                    <h:commandButton value="#{msg.buscar}" action="#{clientePrincipalBean.doBuscarUsuario()}" styleClass="btn btn-light"/></span></h2>
+                </div>
+            </h:form>
+           </div>
+           
+           <!-- BOTONERA Y SELECTOR IDIOMAS -->
+           
+           <div style="float: right" >
+            <h:form >
+                <h:button outcome="registrarMovimiento" value="#{msg.registrarMovimiento} (#{clientePrincipalBean.cliente.dni})" 
+                          rendered="#{clientePrincipalBean.cliente!=null}" styleClass="btn btn-dark"/> | 
+                <h:button outcome="registrarUsuario" value="#{msg.registrarUsuario}" styleClass="btn btn-light" /> |
+                <h:commandButton action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}" styleClass="btn btn-danger"/> 
+                <h:commandLink action="#{languageBean.changeLanguage('es')}">
                     <img src="resources/images/es_flag.png"/>
-                    </h:commandLink>
-                    <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                </h:commandLink>
+                <h:commandLink action="#{languageBean.changeLanguage('en')}">
                     <img src="resources/images/en_flag.png"/>
-                    </h:commandLink>
-                </h:form>
+                </h:commandLink>
+                
+            </h:form>
             </div>
-        
         <hr/>
         
-        
-        <h:form>
-            <h:inputText value="#{clientePrincipalBean.dniBuscado}"/>
-            <h:commandButton value="#{msg.buscarCliente}" action="#{clientePrincipalBean.doBuscarUsuario()}"/>
-        </h:form>
+        <!-- INFORMACIÓN PERSONAL DEL CLIENTE -->
+
         <div class="container" style="max-width: 100%">    
             <div class="row justify-content-md-center">
               <div class="col-sm-0">
@@ -51,8 +65,11 @@
                     <tr><th><h:outputText value="#{msg.telefono}"/></th></tr>
                     <tr><td>#{clientePrincipalBean.cliente.telefono}</td></tr>
                 </table>
-              </div>
-              <div class="col-sm-0">
+            </div>
+                
+                <!-- DATOS CUENTA DEL CLIENTE -->
+                
+            <div class="col-sm-0">
                 <table  border = "1"> 
                     <tr>
                         <th><h:outputText value="#{msg.cuentaUsuario}"/></th>
@@ -64,33 +81,45 @@
                         <th><h:outputText value="#{msg.saldo}"/></th>
                     </tr>
                     <tr>
-                        <td align="center">#{clientePrincipalBean.cuenta.saldo} </td>
+                        <td align="center"> <h:outputText value="#{clientePrincipalBean.cuenta.saldo}" >
+                            <f:convertNumber currencySymbol="€" type="currency" pattern="######€"/>
+                        </h:outputText> </td>
                     </tr>
                 </table>
-              </div>
-              <div class="col-sm-0">
-               <h:form>
+            </div>
+              
+                                <!-- BUSCADOR MOVIMIENTOS -->
+
+                
+            <div class="col-sm-0">
+                <h:form>
                    
-                   <div class="row justify-content-center">
-                    <h:outputLabel value="#{msg.buscarMovimiento}" />
+                <div class="row justify-content-center">
+                       <h5><span class="badge badge-secondary">#{msg.buscarMovimiento}</span></h5>
+
                     <h:panelGrid id="panelParametro">
-                    <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" 
+                        <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" 
                                  rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
 
                     <p:calendar id="popup" value="#{clientePrincipalBean.fechaMov}" rendered="#{'A' eq clientePrincipalBean.criterioDeBusqueda}" pattern="dd/MM/yyyy">
-                    <p:ajax event="dateSelect" listener="#{clientePrincipalBean.dateSelect()}" update="tabla"/>
+                        <p:ajax event="dateSelect" listener="#{clientePrincipalBean.dateSelect()}" update="tabla"/>
                     </p:calendar>
+                        
                     </h:panelGrid>
                     <h:selectOneMenu  value="#{clientePrincipalBean.criterioDeBusqueda}"> 
-                    <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
-                    <f:selectItem itemValue="A" itemLabel="#{msg.fecha}" />
-                    <f:selectItem itemValue="C" itemLabel="#{msg.cantidad}" />
-                    <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
-                    <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
-                    <f:ajax event="click" render="panelParametro" />
+                        <f:selectItem itemValue="B" itemLabel="#{msg.cuentaDestino}" />
+                        <f:selectItem itemValue="A" itemLabel="#{msg.fecha}" />
+                        <f:selectItem itemValue="C" itemLabel="#{msg.cantidad}" />
+                        <f:selectItem itemValue="D" itemLabel="#{msg.beneficiario}" />
+                        <f:selectItem itemValue="E" itemLabel="#{msg.concepto}" />
+                        <f:ajax event="click" render="panelParametro" />
                     </h:selectOneMenu>
-                   </div>
-                       
+                </div>
+                    
+                                    <!-- MOVIMIENTOS DEL CLIENTE -->
+
+                    
+                    
                     <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>    
                     <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" id="tabla" var="movimiento" border="1">
                     <h:column>
@@ -120,7 +149,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msg.cantidad}"/>
                         </f:facet>
-                        #{movimiento.cantidad}
+                        <h:outputText value="#{movimiento.cantidad}">
+                            <f:convertNumber currencySymbol="€" type="currency" pattern="######€"/>
+                        </h:outputText>
                     </h:column>
                     <h:column>
                         <f:facet name="header">
@@ -135,8 +166,8 @@
                         #{movimiento.concepto}
                     </h:column>
                     </h:dataTable>
-             </h:form>
-              </div>
+            </h:form>
+            </div>
                 
             </div>
         </div>

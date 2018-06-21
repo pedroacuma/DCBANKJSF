@@ -46,7 +46,7 @@ public class UsuarioPrincipalBean implements Serializable {
     protected List<Transferencia> listaMovimientos;
     protected String movimientoBuscado;
     protected Date fechaMov;
-    String criterioDeBusqueda;
+    protected String criterioDeBusqueda;
     protected String dniBuscado;
     protected Usuario admin;
 
@@ -185,10 +185,6 @@ public class UsuarioPrincipalBean implements Serializable {
     
     public void dateSelect(){
         this.listaMovimientos = this.tf.buscardorFecha(fechaMov, cuenta);
-        
-        System.out.println(fechaMov);
-        System.out.println(cuenta);
-        System.out.println(listaMovimientos.size());
     }
     
     public String doBuscarUsuario(){
@@ -196,7 +192,6 @@ public class UsuarioPrincipalBean implements Serializable {
         if (cliente != null){
             cuenta = cliente.getCuentaList().get(0);
             listaMovimientos = tf.buscarPorCuenta(cuenta);
-            System.out.println(this.getCriterioDeBusqueda());
         }else{
             cuenta = null;
             listaMovimientos = null;
@@ -205,10 +200,10 @@ public class UsuarioPrincipalBean implements Serializable {
         return "";
     }
     
-    public String reLoader(){
+    public void reLoader(){
         cuenta = cliente.getCuentaList().get(0);
         listaMovimientos = tf.buscarPorCuenta(cuenta);
-        return "";
+        
     }
     
     

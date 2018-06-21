@@ -129,14 +129,6 @@ public class LoginBean implements Serializable{
         this.dni = dni;
     }
 
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
     public Usuario getLoggedUser() {
         return loggedUser;
     }
@@ -144,5 +136,14 @@ public class LoginBean implements Serializable{
     public void setLoggedUser(Usuario loggedUser) {
         this.loggedUser = loggedUser;
     }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+    
     
 }

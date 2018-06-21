@@ -16,21 +16,28 @@
         
             <br></br>
             <h1 align="center">#{msg['zonaCliente']}</h1>
+            
+            
+                                        <!-- BOTONERA Y SELECTOR IDIOMAS -->
             <div align="right">
        
                 <h:form>
-                | <h:link outcome="transferencia" value="#{msg.realizarTransferencia}"/> |
-                <h:commandLink action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}"/> |
-                <h:commandLink action="#{languageBean.changeLanguage('es')}">
-                <img src="resources/images/es_flag.png"/>
-                </h:commandLink>
-                <h:commandLink action="#{languageBean.changeLanguage('en')}">
-                  <img src="resources/images/en_flag.png"/>
-                </h:commandLink>
+                |   <h:button outcome="transferencia" value="#{msg.realizarTransferencia}" styleClass="btn btn-dark" /> |
+                <h:commandButton action="#{clientePrincipalBean.logout()}" value="#{msg.cerrarSesion}" styleClass="btn btn-danger"/> |
+                    <h:commandLink action="#{languageBean.changeLanguage('es')}">
+                        <img src="resources/images/es_flag.png"/>
+                    </h:commandLink>
+                    <h:commandLink action="#{languageBean.changeLanguage('en')}">
+                        <img src="resources/images/en_flag.png"/>
+                    </h:commandLink>
                 </h:form>
+               
             </div>
         
         <hr/>
+        
+                                        <!-- INFORMACIÓN PERSONAL DEL CLIENTE -->
+        
         <div class="container" style="max-width: 100%">    
             <div class="row justify-content-md-center">
               <div class="col-sm-0">
@@ -46,6 +53,9 @@
                     <tr><td>#{clientePrincipalBean.cliente.telefono}</td></tr>
                 </table>
               </div>
+                
+                                    <!-- DATOS CUENTA DEL CLIENTE -->
+                
               <div class="col-sm-0">
                 <table  border = "1"> 
                     <tr>
@@ -58,15 +68,23 @@
                         <th><h:outputText value="#{msg.saldo}"/></th>
                     </tr>
                     <tr>
-                        <td align="center">#{clientePrincipalBean.cuenta.saldo} </td>
+                        <td align="center"><h:outputText value="#{clientePrincipalBean.cuenta.saldo}">
+                            <f:convertNumber currencySymbol="€" type="currency" pattern="######€"/>
+                        </h:outputText> </td>
                     </tr>
                 </table>
               </div>
-              <div class="col-sm-0">
+                
+                
+                                                <!-- BUSCADOR MOVIMIENTOS -->
+                
+            <div class="col-sm-0">
                <h:form>
                    
                    <div class="row justify-content-center">
-                    <h:outputLabel value="#{msg.buscarMovimiento}" />
+                   
+                    <h5><span class="badge badge-secondary">#{msg.buscarMovimiento}</span></h5>
+
                     <h:panelGrid id="panelParametro">
                     <h:inputText id="parametro" autocomplete="off" value="#{clientePrincipalBean.movimientoBuscado}" 
                                  rendered="#{'A' ne clientePrincipalBean.criterioDeBusqueda}"/>
@@ -84,7 +102,11 @@
                     <f:ajax event="click" render="panelParametro" />
                     </h:selectOneMenu>
                    </div>
-                       
+                    
+                   
+                   
+                                                        <!-- MOVIMIENTOS DEL CLIENTE -->
+                   
                     <f:ajax event="keyup" execute="@form" listener="#{clientePrincipalBean.nombreChangeListener}" render="tabla"/>    
                     <h:dataTable value="#{clientePrincipalBean.listaMovimientos}" id="tabla" var="movimiento" border="1">
                     <h:column>
@@ -114,7 +136,9 @@
                         <f:facet name="header">
                             <h:outputText value="#{msg.cantidad}"/>
                         </f:facet>
-                        #{movimiento.cantidad}
+                        <h:outputText value="#{movimiento.cantidad}">
+                            <f:convertNumber currencySymbol="€" type="currency" pattern="######€"/>
+                        </h:outputText>
                     </h:column>
                     <h:column>
                         <f:facet name="header">

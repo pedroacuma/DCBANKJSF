@@ -20,7 +20,15 @@ import javax.faces.validator.ValidatorException;
 
 @FacesValidator("pwd2Validator")
 public class Pwd2Validator implements Validator{
-
+     
+    /**
+     * Comprueba que la contraseña sea equal a la confirmación de contraseña
+     * @param context
+     * @param component
+     * @param value Confirmación de la contraseña
+     * @throws ValidatorException 
+     */
+   
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
      

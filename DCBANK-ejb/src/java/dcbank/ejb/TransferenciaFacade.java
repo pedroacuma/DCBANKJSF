@@ -34,7 +34,7 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
     }
     
     public List<Transferencia> buscarPorCuenta (Cuenta cuenta) {
-        Query q = this.em.createQuery("select t from Transferencia t where t.cuenta = :cuenta");
+        Query q = this.em.createQuery("select t from Transferencia t where t.cuenta = :cuenta ORDER BY t.fecha DESC");
         q.setParameter("cuenta", cuenta);
         
         List<Transferencia> listaMovimientos;
@@ -44,33 +44,6 @@ public class TransferenciaFacade extends AbstractFacade<Transferencia> {
         return  listaMovimientos;        
     }
     
-    public List<Transferencia> buscarPorConcepto (String concepto) {
-        Query q = this.em.createNamedQuery("Transferencia.findByConcepto", Transferencia.class);
-        q.setParameter("concepto", "%"+concepto+"%");
-        
-        List<Transferencia> listaT;
-        try{
-           listaT = (List<Transferencia>) q.getResultList();
-        }catch(Exception ex){
-           listaT = null;
-        }
-        
-        return  listaT;        
-    }
-    
-    public List<Transferencia> buscarPorBeneficiario (String beneficiario) {
-        Query q = this.em.createNamedQuery("Transferencia.findByBeneficiario", Transferencia.class);
-        q.setParameter("beneficiario", "%"+beneficiario+"%");
-        
-        List<Transferencia> listaT;
-        try{
-           listaT = (List<Transferencia>) q.getResultList();
-        }catch(Exception ex){
-           listaT = null;
-        }
-        
-        return  listaT;        
-    }
     //--------------------------CONSULTAS PARA BUSCADOR AJAX----------------------//
     public List<Transferencia> buscardorConcepto (String concepto, Cuenta cuenta) {
         String cadena = "%" + concepto.replace(" ", "%") + "%" ;

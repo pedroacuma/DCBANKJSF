@@ -47,6 +47,9 @@ public class RegistrarUsuarioBean {
     @Inject
     private LoginBean loginBean;
     
+    @Inject
+    private UsuarioPrincipalBean upb;
+    
     private Usuario usuario;
     /**
      * Creates a new instance of RegistrarUsuarioBean
@@ -69,6 +72,7 @@ public class RegistrarUsuarioBean {
         }
         this.usuario = new Usuario();
     }
+    
     
     /**
      * Valida el formato del DNI introducido y que este no esté registrado
@@ -115,15 +119,12 @@ public class RegistrarUsuarioBean {
         
     }
     
-    public void validatePwdCheck(FacesContext context, UIComponent component, Object value) throws ValidatorException{
-        String check = (String) value;
-        if(usuario.getPassword()==null || !check.equals(usuario.getPassword())){
-            FacesMessage msg = new FacesMessage();
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(msg); 
-        }
-    }
-
+    
+    /**
+     * Registra el usuario como rol 0 y con el hash de la clave introducida.
+     * Se le crea una cuenta nueva por defecto. 
+     * @return página con información de registro exitoso
+     */
     
     public String doRegistrar(){
         usuario.setRol((short) 0);
@@ -145,6 +146,9 @@ public class RegistrarUsuarioBean {
         cuentaList.add(c);
         usuario.setCuentaList(cuentaList);
         this.usuarioFacade.edit(usuario);
+        
+        upb.setCliente(usuario);
+        upb.reLoader();
         
         return "registroExitoso?dni=" + usuario.getDni() + "&iban=" + c.getIban() + "&faces-redirect=true";
     }
